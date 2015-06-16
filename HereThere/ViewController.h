@@ -16,7 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationCityState;
-@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *viewLineGraph;
+@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;
 
 @property (nonatomic) NSMutableArray *graphPoints;
 

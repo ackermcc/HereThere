@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 static NSString * const kWUKey = @"c025f7ff8ce9826d";
+static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 @interface ViewController ()
 
@@ -17,6 +18,22 @@ static NSString * const kWUKey = @"c025f7ff8ce9826d";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    //graph points array
+    self.graphPoints = [NSMutableArray new];
+    
+    //chart attributes and style
+    self.chartCurrentWeatherHourly.alwaysDisplayDots = YES;
+    self.chartCurrentWeatherHourly.animationGraphStyle = BEMLineAnimationFade;
+    self.chartCurrentWeatherHourly.enableTouchReport = YES;
+    self.chartCurrentWeatherHourly.enablePopUpReport = YES;
+    self.chartCurrentWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
     
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
@@ -42,12 +59,6 @@ static NSString * const kWUKey = @"c025f7ff8ce9826d";
                                          }];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    self.graphPoints = [NSMutableArray new];
-}
-
 -(void)returnCurrentWeatherForCurrentLocation:(CLLocation *)currentLocation {
     CZWundergroundRequest *request = [CZWundergroundRequest newConditionsRequest];
     CZWundergroundRequest *forecastRequest = [CZWundergroundRequest newHourlyRequest];
@@ -59,8 +70,6 @@ static NSString * const kWUKey = @"c025f7ff8ce9826d";
     
     [request sendWithCompletion:^(CZWeatherData *data, NSError *error) {
         CZWeatherCurrentCondition *condition = data.current;
-        
-        //NSArray *currentHourlyForecast = [[NSArray alloc] initWithArray:data.hourlyForecasts];
         
         [[LMGeocoder sharedInstance] reverseGeocodeCoordinate:currentLocation.coordinate
                                                       service:kLMGeocoderGoogleService
@@ -76,12 +85,22 @@ static NSString * const kWUKey = @"c025f7ff8ce9826d";
     }];
     
     [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
-        NSLog(@"%@",[data.hourlyForecasts firstObject]);
-        for (CZWeatherHourlyCondition *h in data.hourlyForecasts) {
-            NSLog(@"%.f", h.temperature.f);
+        
+        // Fast enumeration for all 36 data points
+//        for (CZWeatherHourlyCondition *h in data.hourlyForecasts) {
+//            NSLog(@"%.f", h.temperature.f);
+//            [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+//        }
+        
+        //For the first 12 items of hourly forcast, add to the array.
+        for (int i = 0; i < 12; i++) {
+            CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
             [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+            
+            NSLog(@"Temp: %.f, Date: %@", h.temperature.f, h.date);
         }
-        [self.viewLineGraph reloadGraph];
+        
+        [self.chartCurrentWeatherHourly reloadGraph];
     }];
 }
 
