@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5T-KH-rUz">
+                                <rect key="frame" x="16" y="36" width="568" height="61"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="568" id="tRQ-b8-xwt"/>
+                                    <constraint firstAttribute="height" constant="61" id="wIK-Fy-Pgn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="tRQ-b8-xwt"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YBp-JV-2mB">
+                                <rect key="frame" x="16" y="105" width="568" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Xgv-ZJ-bQ6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RyL-r3-sNX" customClass="BEMSimpleLineGraphView">
+                                <rect key="frame" x="16" y="158" width="568" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="k56-fR-b7n"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableBezierCurve" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorLine">
+                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableYAxisLabel" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="sizePoint">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorPoint">
+                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorYaxisLabel">
+                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="ehI-OH-ae8"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="HEK-Kb-AzF"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="RyL-r3-sNX" firstAttribute="top" secondItem="YBp-JV-2mB" secondAttribute="bottom" constant="32" id="5lQ-4P-unv"/>
+                            <constraint firstItem="a5T-KH-rUz" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="16" id="Kve-vQ-Bjz"/>
+                            <constraint firstItem="YBp-JV-2mB" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="Myz-xi-pfJ"/>
+                            <constraint firstItem="RyL-r3-sNX" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="WOm-1q-QGb"/>
+                            <constraint firstItem="YBp-JV-2mB" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="bBU-2u-Ooi"/>
+                            <constraint firstItem="a5T-KH-rUz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="lTQ-k1-wKF"/>
+                            <constraint firstItem="YBp-JV-2mB" firstAttribute="top" secondItem="a5T-KH-rUz" secondAttribute="bottom" constant="8" id="qqf-4y-MBR"/>
+                            <constraint firstItem="RyL-r3-sNX" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="rdn-Lt-GEb"/>
+                            <constraint firstItem="a5T-KH-rUz" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="tdW-T8-dPP"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="lblCurrentLocationCityState" destination="YBp-JV-2mB" id="AoH-Iz-DaN"/>
+                        <outlet property="lblCurrentLocationTemp" destination="a5T-KH-rUz" id="YA7-wg-dTe"/>
+                        <outlet property="viewLineGraph" destination="RyL-r3-sNX" id="3d2-7y-chw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

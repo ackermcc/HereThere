@@ -1,0 +1,6 @@
+framework module BEMSimpleLineGraph {
+  umbrella header "Pods-HereThere-BEMSimpleLineGraph-umbrella.h"
+
+  export *
+  module * { export * }
+}

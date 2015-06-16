@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>Pods-HereThere-BEMSimpleLineGraph.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HereThere-CZWeatherKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HereThere-INTULocationManager.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HereThere-LMGeocoder.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HereThere.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>56FA0C90FE255C1DC1FC23F3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6ED493AFD19F26798DBCB643</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6EE6B236207A0A65A766AC47</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>83EA454476362ABB899AC23F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D9106B9D7E4244BFBCAD96FE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
