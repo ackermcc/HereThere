@@ -63,6 +63,11 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     CZWundergroundRequest *request = [CZWundergroundRequest newConditionsRequest];
     CZWundergroundRequest *forecastRequest = [CZWundergroundRequest newHourlyRequest];
     
+    NSDate *currentTimedate = [NSDate date];
+    NSDate *prevTimedate = [currentTimedate dateByAddingTimeInterval:-3*60*60];
+    NSLog(@"prev date: %@", prevTimedate);
+//    CZWundergroundRequest *historicalRequest = [CZWundergroundRequest newHistoryRequestForDate:prevTimedate];
+    
     request.location = [CZWeatherLocation locationFromLocation:currentLocation];
     forecastRequest.location = [CZWeatherLocation locationFromLocation:currentLocation];
     request.key = kWUKey;
@@ -84,24 +89,66 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
                                             }];
     }];
     
-    [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
-        
-        // Fast enumeration for all 36 data points
-//        for (CZWeatherHourlyCondition *h in data.hourlyForecasts) {
-//            NSLog(@"%.f", h.temperature.f);
-//            [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+//    [historicalRequest sendWithCompletion:^(CZWeatherData *data, NSError *error){
+//        if (!error) {
+//            for (int i = 0; i < 4; i++) {
+//                CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
+//                [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+//                
+//                NSLog(@"Historical Temp: %.f, Date: %@", h.temperature.f, h.date);
+//            }
+//            
+//            [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
+//                if (!error) {
+//                    // Fast enumeration for all 36 data points
+//                    //        for (CZWeatherHourlyCondition *h in data.hourlyForecasts) {
+//                    //            NSLog(@"%.f", h.temperature.f);
+//                    //            [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+//                    //        }
+//                    
+//                    //For the first 12 items of hourly forcast, add to the array.
+//                    for (int i = 0; i < 8; i++) {
+//                        CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
+//                        [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+//                        
+//                        NSLog(@"Temp: %.f, Date: %@", h.temperature.f, h.date);
+//                    }
+//                    
+//                    [self.chartCurrentWeatherHourly reloadGraph];
+//                } else {
+//                    NSLog(@"Error: %@", error.description);
+//                }
+//                
+//            }];
+//        } else {
+//            NSLog(@"Error: %@", error.description);
 //        }
-        
-        //For the first 12 items of hourly forcast, add to the array.
-        for (int i = 0; i < 12; i++) {
-            CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
-            [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+//        
+//    }];
+    
+    [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
+        if (!error) {
+            // Fast enumeration for all 36 data points
+            //        for (CZWeatherHourlyCondition *h in data.hourlyForecasts) {
+            //            NSLog(@"%.f", h.temperature.f);
+            //            [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+            //        }
             
-            NSLog(@"Temp: %.f, Date: %@", h.temperature.f, h.date);
+            //For the first 12 items of hourly forcast, add to the array.
+            for (int i = 0; i < 12; i++) {
+                CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
+                [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
+                
+                NSLog(@"Temp: %.f, Date: %@", h.temperature.f, h.date);
+            }
+            
+            [self.chartCurrentWeatherHourly reloadGraph];
+        } else {
+            NSLog(@"Error: %@", error.description);
         }
         
-        [self.chartCurrentWeatherHourly reloadGraph];
     }];
+    
 }
 
 - (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
@@ -117,4 +164,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)refreshWeatherData:(id)sender {
+    [self.chartCurrentWeatherHourly reloadGraph];
+}
 @end

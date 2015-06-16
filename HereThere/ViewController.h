@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;
 
 @property (nonatomic) NSMutableArray *graphPoints;
+- (IBAction)refreshWeatherData:(id)sender;
 
 @end
 
