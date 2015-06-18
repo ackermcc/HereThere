@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LocationSearchTableViewController.h"
 #import "CZWeatherKit.h"
 #import "INTULocationManager.h"
 #import "LMGeocoder.h"

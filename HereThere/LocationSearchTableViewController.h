@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GoogleMaps/GoogleMaps.h>
 
-@interface LocationSearchTableViewController : UITableViewController
-
+@interface LocationSearchTableViewController : UITableViewController <UISearchBarDelegate>
+- (IBAction)dismissSearchController:(id)sender;
+@property (weak, nonatomic) IBOutlet UISearchBar *geoSearchBar;
+@property (nonatomic) NSMutableArray *searchResults;
+@property (nonatomic) NSString *seletedCityResult;
 @end

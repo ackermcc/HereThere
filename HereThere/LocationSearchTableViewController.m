@@ -17,11 +17,50 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.geoSearchBar.delegate = self;
+    self.searchResults = [NSMutableArray new];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self placeAutocomplete:searchText];
+}
+
+- (void)placeAutocomplete:(NSString *)searchString {
+    
+//    GMSVisibleRegion visibleRegion = self.mapView.projection.visibleRegion;
+//    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:visibleRegion.farLeft
+//                                                                       coordinate:visibleRegion.nearRight];
+    GMSPlacesClient *placesClient = [GMSPlacesClient new];
+    GMSAutocompleteFilter *filter = [[GMSAutocompleteFilter alloc] init];
+    filter.type = kGMSPlacesAutocompleteTypeFilterCity;
+    
+    [placesClient autocompleteQuery:searchString
+                              bounds:nil
+                              filter:filter
+                            callback:^(NSArray *results, NSError *error) {
+                                if (error != nil) {
+                                    NSLog(@"Autocomplete error %@", [error localizedDescription]);
+                                    return;
+                                }
+                                
+                                //Empty search results array
+                                if ([self.searchResults count] > 0) {
+                                    [self.searchResults removeAllObjects];
+                                }
+                                
+                                for (GMSAutocompletePrediction* result in results) {
+                                    NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
+                                    [self.searchResults addObject:result.attributedFullText.string];
+                                }
+                                
+                                [self.tableView reloadData];
+                            }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,26 +71,28 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.searchResults count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"geoItem" forIndexPath:indexPath];
     
-    // Configure the cell...
+    cell.textLabel.text = [self.searchResults objectAtIndex:indexPath.row];
     
     return cell;
 }
-*/
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.seletedCityResult = [self.searchResults objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:@"selectedCity" sender:self];
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -97,4 +138,7 @@
 }
 */
 
+- (IBAction)dismissSearchController:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

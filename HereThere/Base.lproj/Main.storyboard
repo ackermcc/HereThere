@@ -135,7 +135,7 @@
                     <navigationItem key="navigationItem" id="cCj-zs-vYz">
                         <barButtonItem key="rightBarButtonItem" title="Add" id="prr-cr-DGW">
                             <connections>
-                                <segue destination="0nh-nD-9VS" kind="presentation" id="x9M-ca-GBD"/>
+                                <segue destination="0nh-nD-9VS" kind="presentation" id="TNE-Ey-x81"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -201,12 +201,12 @@
                     <navigationItem key="navigationItem" id="lkt-vu-gYY">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="g5H-ke-Xr8">
                             <connections>
-                                <action selector="dissmissAndCancel:" destination="u56-Hr-Zlc" id="oL3-z0-uIU"/>
+                                <action selector="dismissSearchController:" destination="u56-Hr-Zlc" id="VZj-KE-shO"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="geoSearch" destination="3zU-mp-hWs" id="RgU-2Q-ghY"/>
+                        <outlet property="geoSearchBar" destination="3zU-mp-hWs" id="JDo-S3-iMo"/>
                         <segue destination="kqR-Gn-NFX" kind="unwind" identifier="selectedCity" unwindAction="unwindFromLocationSearchController:" id="Wei-y2-ffM"/>
                     </connections>
                 </tableViewController>
