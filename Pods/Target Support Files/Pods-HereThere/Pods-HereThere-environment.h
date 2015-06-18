@@ -18,6 +18,12 @@
 #define COCOAPODS_VERSION_MINOR_CZWeatherKit 0
 #define COCOAPODS_VERSION_PATCH_CZWeatherKit 2
 
+// GoogleMaps
+#define COCOAPODS_POD_AVAILABLE_GoogleMaps
+#define COCOAPODS_VERSION_MAJOR_GoogleMaps 1
+#define COCOAPODS_VERSION_MINOR_GoogleMaps 10
+#define COCOAPODS_VERSION_PATCH_GoogleMaps 1
+
 // INTULocationManager
 #define COCOAPODS_POD_AVAILABLE_INTULocationManager
 #define COCOAPODS_VERSION_MAJOR_INTULocationManager 3

@@ -1,18 +1,21 @@
 PODS:
   - BEMSimpleLineGraph (4.0)
   - CZWeatherKit (2.0.2)
+  - GoogleMaps (1.10.1)
   - INTULocationManager (3.0.3)
   - LMGeocoder (1.0.1)
 
 DEPENDENCIES:
   - BEMSimpleLineGraph
   - CZWeatherKit
+  - GoogleMaps
   - INTULocationManager (~> 3.0)
   - LMGeocoder
 
 SPEC CHECKSUMS:
   BEMSimpleLineGraph: e706c36c6e7944f6424285478a914d4adb178f92
   CZWeatherKit: 843ae78647905ab7455b78cbe6291d27afc408c3
+  GoogleMaps: ebf08677f181d9c2dcdbd1721d206f02beccc9b1
   INTULocationManager: e79327803a163f5fec28eb042bb124ed0c6e4876
   LMGeocoder: c81e081869805cae12d667c85b61e6304d5cebe5
 

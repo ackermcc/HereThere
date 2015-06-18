@@ -9,6 +9,7 @@ pod "CZWeatherKit"
 pod 'INTULocationManager', '~> 3.0'
 pod 'LMGeocoder'
 pod 'BEMSimpleLineGraph'
+pod 'GoogleMaps'
 
 end
 

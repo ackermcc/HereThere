@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A4B44F22F9CF710799F69BDD /* Pods_HereThere.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025BFD42641E9BB2EE9F7F45 /* Pods_HereThere.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F32EB3951B3309C400B152CB /* LocationSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */; };
 		F3B1C7151B2E63E800F75AA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B1C7141B2E63E800F75AA0 /* main.m */; };
 		F3B1C7181B2E63E800F75AA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B1C7171B2E63E800F75AA0 /* AppDelegate.m */; };
 		F3B1C71B1B2E63E800F75AA0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B1C71A1B2E63E800F75AA0 /* ViewController.m */; };
@@ -31,6 +32,8 @@
 		025BFD42641E9BB2EE9F7F45 /* Pods_HereThere.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HereThere.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05422722694D3EF30C747848 /* Pods-HereThere.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HereThere.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HereThere/Pods-HereThere.debug.xcconfig"; sourceTree = "<group>"; };
 		69F775CD04AF5034FBE23D28 /* Pods-HereThere.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HereThere.release.xcconfig"; path = "Pods/Target Support Files/Pods-HereThere/Pods-HereThere.release.xcconfig"; sourceTree = "<group>"; };
+		F32EB3931B3309C400B152CB /* LocationSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationSearchTableViewController.h; sourceTree = "<group>"; };
+		F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchTableViewController.m; sourceTree = "<group>"; };
 		F3B1C70F1B2E63E800F75AA0 /* HereThere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HereThere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B1C7131B2E63E800F75AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3B1C7141B2E63E800F75AA0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -109,6 +112,8 @@
 				F3B1C7171B2E63E800F75AA0 /* AppDelegate.m */,
 				F3B1C7191B2E63E800F75AA0 /* ViewController.h */,
 				F3B1C71A1B2E63E800F75AA0 /* ViewController.m */,
+				F32EB3931B3309C400B152CB /* LocationSearchTableViewController.h */,
+				F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */,
 				F3B1C71C1B2E63E800F75AA0 /* Main.storyboard */,
 				F3B1C71F1B2E63E800F75AA0 /* Images.xcassets */,
 				F3B1C7211B2E63E800F75AA0 /* LaunchScreen.xib */,
@@ -294,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F32EB3951B3309C400B152CB /* LocationSearchTableViewController.m in Sources */,
 				F3B1C71B1B2E63E800F75AA0 /* ViewController.m in Sources */,
 				F3B1C7181B2E63E800F75AA0 /* AppDelegate.m in Sources */,
 				F3B1C7151B2E63E800F75AA0 /* main.m in Sources */,
