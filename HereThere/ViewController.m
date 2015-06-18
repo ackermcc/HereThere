@@ -35,6 +35,10 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.chartCurrentWeatherHourly.enablePopUpReport = YES;
     self.chartCurrentWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
     
+    [self getCurrentLocation];
+}
+
+-(void)getCurrentLocation {
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
                                        timeout:10.0
@@ -128,6 +132,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
     [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
         if (!error) {
+            [self.graphPoints removeAllObjects];
             // Fast enumeration for all 36 data points
             //        for (CZWeatherHourlyCondition *h in data.hourlyForecasts) {
             //            NSLog(@"%.f", h.temperature.f);
@@ -159,12 +164,30 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     return [[self.graphPoints objectAtIndex:index] floatValue]; // The value of the point on the Y-Axis for the index.
 }
 
+-(void)unwindFromLocationSearchController:(UIStoryboardSegue *)segue {
+    LocationSearchTableViewController *searchVC = (LocationSearchTableViewController *) segue.sourceViewController;
+    NSLog(@"Newly selected city: %@", searchVC.seletedCityResult);
+    
+    [[LMGeocoder sharedInstance] geocodeAddressString:searchVC.seletedCityResult
+                                              service:kLMGeocoderGoogleService
+                                    completionHandler:^(LMAddress *address, NSError *error) {
+                                        if (address && !error) {
+                                            CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:address.coordinate.latitude longitude:address.coordinate.longitude];
+                                            [self returnCurrentWeatherForCurrentLocation:newLocation];
+                                        }
+                                        else {
+                                            NSLog(@"Error: %@", error.description);
+                                        }
+                                    }];
+
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)refreshWeatherData:(id)sender {
-    [self.chartCurrentWeatherHourly reloadGraph];
+    [self getCurrentLocation];
 }
 @end
