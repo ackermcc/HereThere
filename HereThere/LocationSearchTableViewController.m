@@ -18,6 +18,7 @@
     [super viewDidLoad];
     
     self.geoSearchBar.delegate = self;
+    [self.geoSearchBar becomeFirstResponder];
     self.searchResults = [NSMutableArray new];
     
     // Uncomment the following line to preserve selection between presentations.

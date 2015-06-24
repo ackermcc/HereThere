@@ -174,6 +174,19 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
                                         if (address && !error) {
                                             CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:address.coordinate.latitude longitude:address.coordinate.longitude];
                                             [self returnCurrentWeatherForCurrentLocation:newLocation];
+                                            
+//                                            //Update current view to hald height
+//                                            [self.view layoutIfNeeded];
+//                                            CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
+//                                            CGFloat visibleDeviceViewHeight = self.view.frame.size.height - navBarHeight;
+//                                            
+//                                            self.viewCurrentWeather.frame = CGRectMake(0, navBarHeight, self.view.frame.size.width, visibleDeviceViewHeight/2);
+//                                            
+//                                            //Add new subview to superview so that constraints remain true
+//                                            UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, (visibleDeviceViewHeight/2) + navBarHeight, self.view.frame.size.width, visibleDeviceViewHeight/2)];
+//                                            newView.backgroundColor = [UIColor redColor];
+//                                            [self.view addSubview:newView];
+                                            
                                         }
                                         else {
                                             NSLog(@"Error: %@", error.description);
