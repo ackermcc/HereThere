@@ -224,10 +224,44 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         NSLog(@"Locations from after the first time: %@", [d objectForKey:locationsKey]);
     }
     
+    //Get current number of locations.
+    NSUInteger locationCount = [d arrayForKey:locationsKey].count;
+    NSLog(@"location count: %lu", (unsigned long)locationCount);
     
-    //Add new uiview with correct size.
-//    UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
-//    [self.scrollViewLocations addSubview:newView];
+    //If there is no locations yet, create first view.
+    if (locationCount == 1) {
+        //Add new uiview with correct size.
+        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
+        newView.backgroundColor = [UIColor blueColor];
+        //fix this shit
+        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
+        city.textColor = [UIColor whiteColor];
+        city.numberOfLines = 0;
+        
+        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
+        
+        [newView addSubview:city];
+        [self.scrollViewLocations addSubview:newView];
+        
+        self.scrollViewLocations.contentSize = CGSizeMake(self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
+    }
+    //If there are more locations, add the view to the end.
+    else {
+        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake((locationCount-1)*self.scrollViewLocations.frame.size.width, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
+        newView.backgroundColor = [UIColor redColor];
+        
+        //fix this shit
+        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
+        city.textColor = [UIColor whiteColor];
+        city.numberOfLines = 0;
+        
+        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
+        
+        [newView addSubview:city];
+        [self.scrollViewLocations addSubview:newView];
+        
+        self.scrollViewLocations.contentSize = CGSizeMake(locationCount*self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
+    }
 }
 
 
