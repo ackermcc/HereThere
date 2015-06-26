@@ -23,7 +23,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    self.scrollViewLocations.delegate = self;
     
     //graph points array
     self.graphPoints = [NSMutableArray new];
@@ -172,20 +172,9 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
                                               service:kLMGeocoderGoogleService
                                     completionHandler:^(LMAddress *address, NSError *error) {
                                         if (address && !error) {
-                                            CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:address.coordinate.latitude longitude:address.coordinate.longitude];
-                                            [self returnCurrentWeatherForCurrentLocation:newLocation];
-                                            
-//                                            //Update current view to hald height
-//                                            [self.view layoutIfNeeded];
-//                                            CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
-//                                            CGFloat visibleDeviceViewHeight = self.view.frame.size.height - navBarHeight;
-//                                            
-//                                            self.viewCurrentWeather.frame = CGRectMake(0, navBarHeight, self.view.frame.size.width, visibleDeviceViewHeight/2);
-//                                            
-//                                            //Add new subview to superview so that constraints remain true
-//                                            UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, (visibleDeviceViewHeight/2) + navBarHeight, self.view.frame.size.width, visibleDeviceViewHeight/2)];
-//                                            newView.backgroundColor = [UIColor redColor];
-//                                            [self.view addSubview:newView];
+//                                            CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:address.coordinate.latitude longitude:address.coordinate.longitude];
+//                                            [self returnCurrentWeatherForCurrentLocation:newLocation];
+                                            [self newLocationFromLat:[NSNumber numberWithFloat:address.coordinate.latitude] andLong:[NSNumber numberWithFloat:address.coordinate.longitude]];
                                             
                                         }
                                         else {
@@ -203,4 +192,43 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (IBAction)refreshWeatherData:(id)sender {
     [self getCurrentLocation];
 }
+
+//When a user swipes the paging view this function will be called to switch between location items.
+- (IBAction)changeLocation:(id)sender {
+    
+}
+
+//When a location is added a new view is added to the scroll view with paging enabled.
+-(void)newLocationFromLat:(NSNumber *)lat andLong:(NSNumber *)lng {
+    //Variables
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    NSString *locationsKey = @"savedLocations";
+    NSDictionary *location = @{@"lat":lat,@"long":lng};
+    
+    //If the array is yet to be stored, create it.
+    if (![d arrayForKey:locationsKey]) {
+        //TODO: check for duplicates.////////////////////////////////////////////////////////
+        NSMutableArray *newLocations = [[NSMutableArray alloc] initWithObjects:location, nil];
+        [d setObject:newLocations forKey:locationsKey];
+        NSLog(@"I added the array, you should only see this once");
+        
+        NSLog(@"Locations from first time: %@", [d objectForKey:locationsKey]);
+    }
+    //If it exists add to it
+    else {
+        //Add new location object CLLocation.
+        //TODO: check for duplicates.////////////////////////////////////////////////////////
+        NSMutableArray *retrieved = [[d arrayForKey:locationsKey] mutableCopy];
+        [retrieved addObject:location];
+        [d setObject:retrieved forKey:locationsKey];
+        NSLog(@"Locations from after the first time: %@", [d objectForKey:locationsKey]);
+    }
+    
+    
+    //Add new uiview with correct size.
+//    UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
+//    [self.scrollViewLocations addSubview:newView];
+}
+
+
 @end

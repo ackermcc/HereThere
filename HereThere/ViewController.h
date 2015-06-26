@@ -13,7 +13,7 @@
 #import "LMGeocoder.h"
 #import "BEMSimpleLineGraphView.h"
 
-@interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate>
+@interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewCurrentWeather;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationTemp;
@@ -22,6 +22,10 @@
 
 @property (nonatomic) NSMutableArray *graphPoints;
 - (IBAction)refreshWeatherData:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewLocations;
+@property (weak, nonatomic) IBOutlet UIPageControl *locationController;
+- (IBAction)changeLocation:(id)sender;
 
 @end
 

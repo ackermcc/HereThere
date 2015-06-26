@@ -39,7 +39,7 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="268"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5T-KH-rUz" userLabel="degrees">
-                                        <rect key="frame" x="16" y="23" width="568" height="61"/>
+                                        <rect key="frame" x="16" y="35" width="568" height="61"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="61" id="7G2-XK-QSL"/>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="568" id="tRQ-b8-xwt"/>
@@ -54,7 +54,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YBp-JV-2mB" userLabel="city, state">
-                                        <rect key="frame" x="16" y="94" width="568" height="21"/>
+                                        <rect key="frame" x="16" y="106" width="568" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="W1S-Ff-oD7"/>
                                         </constraints>
@@ -63,7 +63,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RyL-r3-sNX" customClass="BEMSimpleLineGraphView">
-                                        <rect key="frame" x="0.0" y="123" width="600" height="145"/>
+                                        <rect key="frame" x="0.0" y="132" width="600" height="136"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -128,10 +128,10 @@
                                     <constraint firstAttribute="trailing" secondItem="RyL-r3-sNX" secondAttribute="trailing" id="QD7-OY-dP4"/>
                                     <constraint firstAttribute="trailing" secondItem="RyL-r3-sNX" secondAttribute="trailing" id="SKi-GQ-e4v"/>
                                     <constraint firstItem="RyL-r3-sNX" firstAttribute="leading" secondItem="Zef-a3-LIT" secondAttribute="leading" id="TKJ-ss-2lp"/>
-                                    <constraint firstItem="a5T-KH-rUz" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="top" constant="23" id="Z3D-c4-6wv"/>
+                                    <constraint firstItem="a5T-KH-rUz" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="top" constant="35" id="Z3D-c4-6wv"/>
                                     <constraint firstItem="YBp-JV-2mB" firstAttribute="top" secondItem="a5T-KH-rUz" secondAttribute="bottom" constant="10" id="Zd2-xx-XcH"/>
                                     <constraint firstAttribute="trailing" secondItem="RyL-r3-sNX" secondAttribute="trailing" id="a2R-BW-9r6"/>
-                                    <constraint firstItem="RyL-r3-sNX" firstAttribute="top" secondItem="YBp-JV-2mB" secondAttribute="bottom" constant="8" id="i4J-D6-CoI"/>
+                                    <constraint firstItem="RyL-r3-sNX" firstAttribute="top" secondItem="YBp-JV-2mB" secondAttribute="bottom" constant="5" id="i4J-D6-CoI"/>
                                     <constraint firstAttribute="bottom" secondItem="RyL-r3-sNX" secondAttribute="bottom" constant="20" id="ker-vj-u4A"/>
                                     <constraint firstItem="RyL-r3-sNX" firstAttribute="leading" secondItem="Zef-a3-LIT" secondAttribute="leading" id="oQ7-Dj-QwR"/>
                                     <constraint firstItem="a5T-KH-rUz" firstAttribute="leading" secondItem="Zef-a3-LIT" secondAttribute="leading" constant="16" id="sXP-Px-FSc"/>
@@ -156,28 +156,34 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hEn-Qm-jw5" userLabel="Other Locations">
-                                <rect key="frame" x="0.0" y="333" width="600" height="267"/>
+                            <scrollView clipsSubviews="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ylC-KO-cN9">
+                                <rect key="frame" x="0.0" y="332" width="600" height="268"/>
+                                <subviews>
+                                    <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="1" translatesAutoresizingMaskIntoConstraints="NO" id="ow1-3a-B7t">
+                                        <rect key="frame" x="281" y="223" width="39" height="37"/>
+                                        <connections>
+                                            <action selector="changeLocation:" destination="vXZ-lx-hvc" eventType="valueChanged" id="C2H-hS-iQy"/>
+                                        </connections>
+                                    </pageControl>
+                                </subviews>
                                 <color key="backgroundColor" red="1" green="0.4156863093" blue="0.38823533059999998" alpha="1" colorSpace="deviceRGB"/>
-                            </view>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hEn-Qm-jw5" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" constant="1" id="3r8-0U-3yj"/>
-                            <constraint firstItem="hEn-Qm-jw5" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" constant="1" id="3yo-b5-eKL"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="6YT-Fa-UAp"/>
-                            <constraint firstItem="Zef-a3-LIT" firstAttribute="height" secondItem="hEn-Qm-jw5" secondAttribute="height" id="ES7-gx-Iw1"/>
+                            <constraint firstItem="ylC-KO-cN9" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="A9z-EJ-csg"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="HkC-5n-Hjf"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ylC-KO-cN9" secondAttribute="bottom" id="IgA-QU-aif"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Zef-a3-LIT" secondAttribute="trailing" constant="-16" id="KAo-8U-A0c"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hEn-Qm-jw5" secondAttribute="trailing" constant="-16" id="OqZ-N8-iIc"/>
+                            <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="P77-9B-dcU"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="TdQ-73-bhX"/>
-                            <constraint firstItem="hEn-Qm-jw5" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" constant="1" id="ULN-Xk-uvS"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="centerY" id="YvH-ZL-yP2"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Zps-75-aKb"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="hEn-Qm-jw5" secondAttribute="bottom" id="a73-JA-fkQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ylC-KO-cN9" secondAttribute="trailing" constant="-16" id="aqX-DD-O6o"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="hBb-9z-Ltp"/>
-                            <constraint firstItem="hEn-Qm-jw5" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="qA6-fw-6Ka"/>
-                            <constraint firstAttribute="height" secondItem="hEn-Qm-jw5" secondAttribute="height" multiplier="0.5" constant="482.5" id="uRL-13-Nx0"/>
+                            <constraint firstItem="ylC-KO-cN9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="jde-2Z-dTH"/>
+                            <constraint firstItem="Zef-a3-LIT" firstAttribute="height" secondItem="ylC-KO-cN9" secondAttribute="height" id="yGM-ro-oW3"/>
                             <constraint firstAttribute="height" secondItem="Zef-a3-LIT" secondAttribute="height" multiplier="0.5" constant="450" id="ySe-x8-oyr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Zef-a3-LIT" secondAttribute="trailing" constant="-16" id="ynZ-do-erh"/>
                         </constraints>
@@ -185,10 +191,10 @@
                             <mask key="constraints">
                                 <exclude reference="HkC-5n-Hjf"/>
                                 <exclude reference="KAo-8U-A0c"/>
+                                <exclude reference="P77-9B-dcU"/>
                                 <exclude reference="TdQ-73-bhX"/>
                                 <exclude reference="hBb-9z-Ltp"/>
                                 <exclude reference="ySe-x8-oyr"/>
-                                <exclude reference="uRL-13-Nx0"/>
                                 <exclude reference="6YT-Fa-UAp"/>
                             </mask>
                         </variation>
@@ -209,6 +215,8 @@
                         <outlet property="chartCurrentWeatherHourly" destination="RyL-r3-sNX" id="sWF-4Y-dVK"/>
                         <outlet property="lblCurrentLocationCityState" destination="YBp-JV-2mB" id="AoH-Iz-DaN"/>
                         <outlet property="lblCurrentLocationTemp" destination="a5T-KH-rUz" id="YA7-wg-dTe"/>
+                        <outlet property="locationController" destination="ow1-3a-B7t" id="1VS-VR-NFO"/>
+                        <outlet property="scrollViewLocations" destination="ylC-KO-cN9" id="L3i-ld-RAb"/>
                         <outlet property="viewCurrentWeather" destination="Zef-a3-LIT" id="6OM-W5-nBV"/>
                     </connections>
                 </viewController>
