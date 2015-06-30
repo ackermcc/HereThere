@@ -23,7 +23,19 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.scrollViewLocations.delegate = self;
+    
+    //If any compared locations exist, load the first one.
+    NSArray *compareLocations = [[NSArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"]];
+    if (compareLocations.count > 0) {
+        NSNumber *lat = [[compareLocations firstObject] valueForKey:@"lat"];
+        NSNumber *lng = [[compareLocations firstObject] valueForKey:@"long"];
+        NSLog(@"First location in array: %.f, %.f", [lat floatValue], [lng floatValue]);
+        WeatherData *data = [[WeatherData alloc] initWithLat:[lat floatValue] andLong:[lng floatValue]];
+        NSLog(@"Weather: %.f, %@", data.currTemp, data.city);
+        
+        self.lblComparedWeatherLocationTemp.text = [NSString stringWithFormat:@"%.f", data.currTemp];
+        self.lblComparedLocationCityState.text = [NSString stringWithFormat:@"%@, %@", data.city, data.state];
+    }
     
     //graph points array
     self.graphPoints = [NSMutableArray new];
@@ -47,7 +59,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
                                              if (status == INTULocationStatusSuccess) {
                                                  // Request succeeded, meaning achievedAccuracy is at least the requested accuracy, and
                                                  // currentLocation contains the device's current location.
-                                                 [self returnCurrentWeatherForCurrentLocation:currentLocation];
+                                                 [self returnWeatherForLocation:currentLocation];
                                              }
                                              else if (status == INTULocationStatusTimedOut) {
                                                  // Wasn't able to locate the user with the requested accuracy within the timeout interval.
@@ -63,24 +75,23 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
                                          }];
 }
 
--(void)returnCurrentWeatherForCurrentLocation:(CLLocation *)currentLocation {
+-(void)returnWeatherForLocation:(CLLocation *)location {
     CZWundergroundRequest *request = [CZWundergroundRequest newConditionsRequest];
     CZWundergroundRequest *forecastRequest = [CZWundergroundRequest newHourlyRequest];
     
-    NSDate *currentTimedate = [NSDate date];
-    NSDate *prevTimedate = [currentTimedate dateByAddingTimeInterval:-3*60*60];
-    NSLog(@"prev date: %@", prevTimedate);
+//    NSDate *currentTimedate = [NSDate date];
+//    NSDate *prevTimedate = [currentTimedate dateByAddingTimeInterval:-3*60*60];
 //    CZWundergroundRequest *historicalRequest = [CZWundergroundRequest newHistoryRequestForDate:prevTimedate];
     
-    request.location = [CZWeatherLocation locationFromLocation:currentLocation];
-    forecastRequest.location = [CZWeatherLocation locationFromLocation:currentLocation];
+    request.location = [CZWeatherLocation locationFromLocation:location];
+    forecastRequest.location = [CZWeatherLocation locationFromLocation:location];
     request.key = kWUKey;
     forecastRequest.key = kWUKey;
     
     [request sendWithCompletion:^(CZWeatherData *data, NSError *error) {
         CZWeatherCurrentCondition *condition = data.current;
         
-        [[LMGeocoder sharedInstance] reverseGeocodeCoordinate:currentLocation.coordinate
+        [[LMGeocoder sharedInstance] reverseGeocodeCoordinate:location.coordinate
                                                       service:kLMGeocoderGoogleService
                                             completionHandler:^(LMAddress *address, NSError *error) {
                                                 if (address && !error) {
@@ -143,8 +154,6 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
             for (int i = 0; i < 12; i++) {
                 CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
                 [self.graphPoints addObject:[NSNumber numberWithFloat:h.temperature.f]];
-                
-                NSLog(@"Temp: %.f, Date: %@", h.temperature.f, h.date);
             }
             
             [self.chartCurrentWeatherHourly reloadGraph];
@@ -226,42 +235,43 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
     //Get current number of locations.
     NSUInteger locationCount = [d arrayForKey:locationsKey].count;
-    NSLog(@"location count: %lu", (unsigned long)locationCount);
     
+    
+//TODO: Remove after implimenting new table view
     //If there is no locations yet, create first view.
-    if (locationCount == 1) {
-        //Add new uiview with correct size.
-        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
-        newView.backgroundColor = [UIColor blueColor];
-        //fix this shit
-        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
-        city.textColor = [UIColor whiteColor];
-        city.numberOfLines = 0;
-        
-        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
-        
-        [newView addSubview:city];
-        [self.scrollViewLocations addSubview:newView];
-        
-        self.scrollViewLocations.contentSize = CGSizeMake(self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
-    }
-    //If there are more locations, add the view to the end.
-    else {
-        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake((locationCount-1)*self.scrollViewLocations.frame.size.width, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
-        newView.backgroundColor = [UIColor redColor];
-        
-        //fix this shit
-        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
-        city.textColor = [UIColor whiteColor];
-        city.numberOfLines = 0;
-        
-        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
-        
-        [newView addSubview:city];
-        [self.scrollViewLocations addSubview:newView];
-        
-        self.scrollViewLocations.contentSize = CGSizeMake(locationCount*self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
-    }
+//    if (locationCount == 1) {
+//        //Add new uiview with correct size.
+//        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
+//        newView.backgroundColor = [UIColor blueColor];
+//        //fix this shit
+//        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
+//        city.textColor = [UIColor whiteColor];
+//        city.numberOfLines = 0;
+//        
+//        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
+//        
+//        [newView addSubview:city];
+//        [self.scrollViewLocations addSubview:newView];
+//        
+//        self.scrollViewLocations.contentSize = CGSizeMake(self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
+//    }
+//    //If there are more locations, add the view to the end.
+//    else {
+//        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake((locationCount-1)*self.scrollViewLocations.frame.size.width, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
+//        newView.backgroundColor = [UIColor redColor];
+//        
+//        //fix this shit
+//        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
+//        city.textColor = [UIColor whiteColor];
+//        city.numberOfLines = 0;
+//        
+//        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
+//        
+//        [newView addSubview:city];
+//        [self.scrollViewLocations addSubview:newView];
+//        
+//        self.scrollViewLocations.contentSize = CGSizeMake(locationCount*self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
+//    }
 }
 
 

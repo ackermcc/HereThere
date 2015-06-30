@@ -156,26 +156,123 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <scrollView clipsSubviews="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ylC-KO-cN9">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0em-to-vRz" userLabel="Compared Location">
                                 <rect key="frame" x="0.0" y="332" width="600" height="268"/>
-                                <color key="backgroundColor" red="1" green="0.4156863093" blue="0.38823533059999998" alpha="1" colorSpace="deviceRGB"/>
-                            </scrollView>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMs-Zc-WPX" userLabel="degrees">
+                                        <rect key="frame" x="16" y="35" width="568" height="61"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="568" id="4Bh-yZ-XOx"/>
+                                            <constraint firstAttribute="height" constant="61" id="UhP-wj-cTz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="4Bh-yZ-XOx"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yx8-ml-yN0" userLabel="city, state">
+                                        <rect key="frame" x="16" y="106" width="568" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="nof-od-TD6"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1yT-oK-eEo" customClass="BEMSimpleLineGraphView">
+                                        <rect key="frame" x="0.0" y="132" width="600" height="136"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="177" id="2ce-gR-Thp"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="381" id="TZk-Ni-OMT"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="enableBezierCurve" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="colorLine">
+                                                <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="enableYAxisLabel" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="sizePoint">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="colorPoint">
+                                                <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="colorYaxisLabel">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="colorBottom">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="colorTop">
+                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="alphaLine">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="widthLine">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="alphaTop">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="alphaBottom">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="2ce-gR-Thp"/>
+                                                <exclude reference="TZk-Ni-OMT"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="dataSource" destination="vXZ-lx-hvc" id="CJL-Uj-MhG"/>
+                                            <outlet property="delegate" destination="vXZ-lx-hvc" id="4rk-7f-jIM"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="iMs-Zc-WPX" firstAttribute="leading" secondItem="0em-to-vRz" secondAttribute="leading" constant="16" id="0Sk-mL-2xK"/>
+                                    <constraint firstAttribute="trailing" secondItem="1yT-oK-eEo" secondAttribute="trailing" id="1EA-Yo-8T7"/>
+                                    <constraint firstAttribute="trailing" secondItem="Yx8-ml-yN0" secondAttribute="trailing" constant="16" id="Ean-mP-0fR"/>
+                                    <constraint firstItem="iMs-Zc-WPX" firstAttribute="top" secondItem="0em-to-vRz" secondAttribute="top" constant="35" id="MF8-le-uvS"/>
+                                    <constraint firstAttribute="trailing" secondItem="iMs-Zc-WPX" secondAttribute="trailing" constant="16" id="OzB-W8-THN"/>
+                                    <constraint firstAttribute="bottom" secondItem="1yT-oK-eEo" secondAttribute="bottom" id="TgW-ah-IKG"/>
+                                    <constraint firstItem="1yT-oK-eEo" firstAttribute="leading" secondItem="0em-to-vRz" secondAttribute="leading" id="U64-Vg-z26"/>
+                                    <constraint firstAttribute="bottom" secondItem="Yx8-ml-yN0" secondAttribute="bottom" constant="5" id="YJT-sx-xcO"/>
+                                    <constraint firstItem="Yx8-ml-yN0" firstAttribute="top" secondItem="iMs-Zc-WPX" secondAttribute="bottom" constant="10" id="c1e-9X-jx5"/>
+                                    <constraint firstItem="1yT-oK-eEo" firstAttribute="top" secondItem="Yx8-ml-yN0" secondAttribute="bottom" constant="5" id="gfL-PJ-BWX"/>
+                                    <constraint firstItem="Yx8-ml-yN0" firstAttribute="leading" secondItem="0em-to-vRz" secondAttribute="leading" constant="16" id="pgj-Iu-8ff"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="YJT-sx-xcO"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="6YT-Fa-UAp"/>
-                            <constraint firstItem="ylC-KO-cN9" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="A9z-EJ-csg"/>
+                            <constraint firstItem="0em-to-vRz" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="FfZ-zD-sB1"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="HkC-5n-Hjf"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ylC-KO-cN9" secondAttribute="bottom" id="IgA-QU-aif"/>
+                            <constraint firstItem="Zef-a3-LIT" firstAttribute="height" secondItem="0em-to-vRz" secondAttribute="height" id="JxH-q6-59Z"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Zef-a3-LIT" secondAttribute="trailing" constant="-16" id="KAo-8U-A0c"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="P77-9B-dcU"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="TdQ-73-bhX"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="centerY" id="YvH-ZL-yP2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0em-to-vRz" secondAttribute="trailing" constant="-16" id="Z3I-kY-wEP"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Zps-75-aKb"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ylC-KO-cN9" secondAttribute="trailing" constant="-16" id="aqX-DD-O6o"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="hBb-9z-Ltp"/>
-                            <constraint firstItem="ylC-KO-cN9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="jde-2Z-dTH"/>
-                            <constraint firstItem="Zef-a3-LIT" firstAttribute="height" secondItem="ylC-KO-cN9" secondAttribute="height" id="yGM-ro-oW3"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="0em-to-vRz" secondAttribute="bottom" id="scn-XI-9GZ"/>
+                            <constraint firstItem="0em-to-vRz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="utj-Cm-4f6"/>
                             <constraint firstAttribute="height" secondItem="Zef-a3-LIT" secondAttribute="height" multiplier="0.5" constant="450" id="ySe-x8-oyr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Zef-a3-LIT" secondAttribute="trailing" constant="-16" id="ynZ-do-erh"/>
                         </constraints>
@@ -204,10 +301,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="chartComparedWeatherHourly" destination="1yT-oK-eEo" id="fps-tQ-ken"/>
                         <outlet property="chartCurrentWeatherHourly" destination="RyL-r3-sNX" id="sWF-4Y-dVK"/>
+                        <outlet property="lblComparedLocationCityState" destination="Yx8-ml-yN0" id="bfJ-q8-eEI"/>
+                        <outlet property="lblComparedWeatherLocationTemp" destination="iMs-Zc-WPX" id="gRf-5C-3fH"/>
                         <outlet property="lblCurrentLocationCityState" destination="YBp-JV-2mB" id="AoH-Iz-DaN"/>
                         <outlet property="lblCurrentLocationTemp" destination="a5T-KH-rUz" id="YA7-wg-dTe"/>
-                        <outlet property="scrollViewLocations" destination="ylC-KO-cN9" id="L3i-ld-RAb"/>
                         <outlet property="viewCurrentWeather" destination="Zef-a3-LIT" id="6OM-W5-nBV"/>
                     </connections>
                 </viewController>
