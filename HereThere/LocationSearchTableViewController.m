@@ -57,9 +57,10 @@
                                 
                                 for (GMSAutocompletePrediction* result in results) {
                                     NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
-                                    [self.searchResults addObject:result.attributedFullText.string];
+                                    //Add full result to array.
+                                    [self.searchResults addObject:result];
                                 }
-                                
+
                                 [self.tableView reloadData];
                             }];
 }
@@ -85,14 +86,25 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"geoItem" forIndexPath:indexPath];
     
-    cell.textLabel.text = [self.searchResults objectAtIndex:indexPath.row];
+    cell.textLabel.text = [[[self.searchResults objectAtIndex:indexPath.row]attributedFullText]string];
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.seletedCityResult = [self.searchResults objectAtIndex:indexPath.row];
-    [self performSegueWithIdentifier:@"selectedCity" sender:self];
+    GMSPlacesClient *client = [GMSPlacesClient new];
+    [client lookUpPlaceID:[[self.searchResults objectAtIndex:indexPath.row]placeID] callback:^(GMSPlace *place, NSError *error) {
+        if (error != nil) {
+            NSLog(@"Place Details error %@", [error localizedDescription]);
+            return;
+        }
+        
+        if (place != nil) {
+            self.selectedLocation = [[CLLocation alloc] initWithLatitude:place.coordinate.latitude longitude:place.coordinate.longitude];
+            
+            [self performSegueWithIdentifier:@"selectedCity" sender:self];
+        }
+    }];
 }
 
 /*

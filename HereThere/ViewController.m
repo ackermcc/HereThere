@@ -175,18 +175,10 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 -(void)unwindFromLocationSearchController:(UIStoryboardSegue *)segue {
     LocationSearchTableViewController *searchVC = (LocationSearchTableViewController *) segue.sourceViewController;
-    NSLog(@"Newly selected city: %@", searchVC.seletedCityResult);
+    NSLog(@"Newly selected city: %@", searchVC.selectedLocation);
     
-    [[LMGeocoder sharedInstance] geocodeAddressString:searchVC.seletedCityResult
-                                              service:kLMGeocoderGoogleService
-                                    completionHandler:^(LMAddress *address, NSError *error) {
-                                        if (address && !error) {
-                                            [self newLocationFromLat:[NSNumber numberWithFloat:address.coordinate.latitude] andLong:[NSNumber numberWithFloat:address.coordinate.longitude]];
-                                        }
-                                        else {
-                                            NSLog(@"Error: %@", error.description);
-                                        }
-                                    }];
+    //New location.
+    [self newLocationFromLat:[NSNumber numberWithFloat:searchVC.selectedLocation.coordinate.latitude] andLong:[NSNumber numberWithFloat:searchVC.selectedLocation.coordinate.longitude]];
 
 }
 
@@ -209,6 +201,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     //Variables
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
     NSString *locationsKey = @"savedLocations";
+    
+    //Create CZWeatherLocation object to be stored in the array.
     NSDictionary *location = @{@"lat":lat,@"long":lng};
     
     //If the array is yet to be stored, create it.
@@ -230,42 +224,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         NSLog(@"Locations from after the first time: %@", [d objectForKey:locationsKey]);
     }
     
-    
-//TODO: Remove after implimenting new table view
-    //If there is no locations yet, create first view.
-//    if (locationCount == 1) {
-//        //Add new uiview with correct size.
-//        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
-//        newView.backgroundColor = [UIColor blueColor];
-//        //fix this shit
-//        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
-//        city.textColor = [UIColor whiteColor];
-//        city.numberOfLines = 0;
-//        
-//        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
-//        
-//        [newView addSubview:city];
-//        [self.scrollViewLocations addSubview:newView];
-//        
-//        self.scrollViewLocations.contentSize = CGSizeMake(self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
-//    }
-//    //If there are more locations, add the view to the end.
-//    else {
-//        UIView *newView = [[UIView alloc] initWithFrame:CGRectMake((locationCount-1)*self.scrollViewLocations.frame.size.width, 0, self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height)];
-//        newView.backgroundColor = [UIColor redColor];
-//        
-//        //fix this shit
-//        UILabel *city = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, newView.frame.size.width, newView.frame.size.height)];
-//        city.textColor = [UIColor whiteColor];
-//        city.numberOfLines = 0;
-//        
-//        city.text = [NSString stringWithFormat:@"%.f, %.f", [lat floatValue], [lng floatValue]];
-//        
-//        [newView addSubview:city];
-//        [self.scrollViewLocations addSubview:newView];
-//        
-//        self.scrollViewLocations.contentSize = CGSizeMake(locationCount*self.scrollViewLocations.frame.size.width, self.scrollViewLocations.frame.size.height);
-//    }
+    [self.tableSavedLocations reloadData];
 }
 
 //Set up tableview for saved locations
