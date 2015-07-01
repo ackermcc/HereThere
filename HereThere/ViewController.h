@@ -25,7 +25,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblComparedWeatherLocationTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lblComparedLocationCityState;
 
-@property (nonatomic) NSMutableArray *graphPoints;
+@property (nonatomic) NSMutableArray *currLocHourlyData;
+@property (nonatomic) NSMutableArray *compLocHourlyData;
 - (IBAction)refreshWeatherData:(id)sender;
 
 

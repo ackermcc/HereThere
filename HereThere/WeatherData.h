@@ -16,8 +16,8 @@
 @property (copy) NSString *city;
 @property (copy) NSString *state;
 @property float currTemp;
+@property (copy) NSArray *twelveHourData;
 
--(id)initWithLocation:(CLLocation *)location;
--(id)initWithLat:(float)lat andLong:(float)lng;
+-(id)init;
 
 @end
