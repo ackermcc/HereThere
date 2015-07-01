@@ -257,10 +257,29 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="kPG-Ed-Lfi">
+                                <rect key="frame" x="0.0" y="332" width="600" height="268"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="savedLocation" id="uYL-TO-sL7">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uYL-TO-sL7" id="L8g-NE-NBG">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="UXp-e9-bLw"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="Qfs-bv-cO3"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="kPG-Ed-Lfi" firstAttribute="height" secondItem="0em-to-vRz" secondAttribute="height" id="6Vs-GL-gvw"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="6YT-Fa-UAp"/>
+                            <constraint firstItem="kPG-Ed-Lfi" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Dcs-KR-jYS"/>
                             <constraint firstItem="0em-to-vRz" firstAttribute="top" secondItem="Zef-a3-LIT" secondAttribute="bottom" id="FfZ-zD-sB1"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="HkC-5n-Hjf"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="height" secondItem="0em-to-vRz" secondAttribute="height" id="JxH-q6-59Z"/>
@@ -270,11 +289,13 @@
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="centerY" id="YvH-ZL-yP2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="0em-to-vRz" secondAttribute="trailing" constant="-16" id="Z3I-kY-wEP"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="Zps-75-aKb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kPG-Ed-Lfi" secondAttribute="trailing" constant="-16" id="d6G-TC-lYY"/>
                             <constraint firstItem="Zef-a3-LIT" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="hBb-9z-Ltp"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="0em-to-vRz" secondAttribute="bottom" id="scn-XI-9GZ"/>
                             <constraint firstItem="0em-to-vRz" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="utj-Cm-4f6"/>
                             <constraint firstAttribute="height" secondItem="Zef-a3-LIT" secondAttribute="height" multiplier="0.5" constant="450" id="ySe-x8-oyr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Zef-a3-LIT" secondAttribute="trailing" constant="-16" id="ynZ-do-erh"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="kPG-Ed-Lfi" secondAttribute="bottom" id="zDn-06-MkV"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -307,6 +328,7 @@
                         <outlet property="lblComparedWeatherLocationTemp" destination="iMs-Zc-WPX" id="gRf-5C-3fH"/>
                         <outlet property="lblCurrentLocationCityState" destination="YBp-JV-2mB" id="AoH-Iz-DaN"/>
                         <outlet property="lblCurrentLocationTemp" destination="a5T-KH-rUz" id="YA7-wg-dTe"/>
+                        <outlet property="tableSavedLocations" destination="kPG-Ed-Lfi" id="pAg-TR-ecg"/>
                         <outlet property="viewCurrentWeather" destination="Zef-a3-LIT" id="6OM-W5-nBV"/>
                     </connections>
                 </viewController>

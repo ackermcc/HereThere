@@ -15,7 +15,7 @@
 
 #import "WeatherData.h"
 
-@interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, UIScrollViewDelegate>
+@interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, UIScrollViewDelegate, UITableViewDataSource, UITabBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewCurrentWeather;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationTemp;
@@ -29,6 +29,7 @@
 @property (nonatomic) NSMutableArray *compLocHourlyData;
 - (IBAction)refreshWeatherData:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UITableView *tableSavedLocations;
 
 - (IBAction)changeLocation:(id)sender;
 

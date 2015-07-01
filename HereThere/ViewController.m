@@ -196,7 +196,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 }
 
 - (IBAction)refreshWeatherData:(id)sender {
-    [self getCurrentLocation];
+    
 }
 
 //When a user swipes the paging view this function will be called to switch between location items.
@@ -229,9 +229,6 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         [d setObject:retrieved forKey:locationsKey];
         NSLog(@"Locations from after the first time: %@", [d objectForKey:locationsKey]);
     }
-    
-    //Get current number of locations.
-    NSUInteger locationCount = [d arrayForKey:locationsKey].count;
     
     
 //TODO: Remove after implimenting new table view
@@ -271,5 +268,18 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 //    }
 }
 
+//Set up tableview for saved locations
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"] count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"savedLocation"];
+    
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%f", [[[[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"] objectAtIndex:indexPath.row] valueForKey:@"lat"] floatValue]];
+    
+    return cell;
+}
 
 @end
