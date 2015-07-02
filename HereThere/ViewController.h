@@ -18,6 +18,7 @@
 @interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, UIScrollViewDelegate, UITableViewDataSource, UITabBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewCurrentWeather;
+@property (weak, nonatomic) IBOutlet UIView *viewComparedWeather;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationCityState;
 @property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;

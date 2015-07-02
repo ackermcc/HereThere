@@ -55,6 +55,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.chartComparedWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
     
     [self getCurrentLocation];
+    [self.tableSavedLocations reloadData];
 }
 
 -(void)getCurrentLocation {
@@ -191,9 +192,13 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
 }
 
-//When a user swipes the paging view this function will be called to switch between location items.
+//When the user selectes to change, slide the compared weather view down and show the tableview for selection.
 - (IBAction)changeLocation:(id)sender {
-    
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y * 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
+    } completion:^(BOOL complete){
+        
+    }];
 }
 
 //When a location is added a new view is added to the scroll view with paging enabled.
@@ -220,7 +225,14 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         [d setObject:retrieved forKey:locationsKey];
         NSLog(@"Locations from after the first time: %@", [d objectForKey:locationsKey]);
     }
+    NSNumber *lat = [[[d arrayForKey:locationsKey] lastObject] valueForKey:@"lat"];
+    NSNumber *lng = [[[d arrayForKey:locationsKey] lastObject] valueForKey:@"lng"];
     
+    CLLocationDegrees latitude = [lat floatValue];
+    CLLocationDegrees longitude = [lng floatValue];
+    
+    CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+    [self returnWeatherForLocation:aLocation forCurrentView:NO];
     [self.tableSavedLocations reloadData];
 }
 
@@ -236,6 +248,24 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [[l objectAtIndex:indexPath.row] valueForKey:@"city"], [[l objectAtIndex:indexPath.row] valueForKey:@"state"]];
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
+    NSNumber *lat = [[l objectAtIndex:indexPath.row] valueForKey:@"lat"];
+    NSNumber *lng = [[l objectAtIndex:indexPath.row] valueForKey:@"lng"];
+    
+    CLLocationDegrees latitude = [lat floatValue];
+    CLLocationDegrees longitude = [lng floatValue];
+    
+    CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+    [self returnWeatherForLocation:aLocation forCurrentView:NO];
+    
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y / 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
+    } completion:^(BOOL complete){
+        [self.tableSavedLocations deselectRowAtIndexPath:indexPath animated:YES];
+    }];
 }
 
 @end
