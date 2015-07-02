@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MBe-Bu-c9t">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MBe-Bu-c9t">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -310,9 +310,9 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="cCj-zs-vYz">
-                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="osa-oE-YIK">
+                        <barButtonItem key="leftBarButtonItem" title="Change" id="osa-oE-YIK">
                             <connections>
-                                <action selector="refreshWeatherData:" destination="vXZ-lx-hvc" id="dBX-sZ-hrw"/>
+                                <action selector="changeLocation:" destination="vXZ-lx-hvc" id="6OD-fh-lIV"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add" id="prr-cr-DGW">

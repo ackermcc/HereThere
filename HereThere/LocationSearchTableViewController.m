@@ -20,6 +20,7 @@
     self.geoSearchBar.delegate = self;
     [self.geoSearchBar becomeFirstResponder];
     self.searchResults = [NSMutableArray new];
+    self.selectedLocation = [NSMutableDictionary new];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -40,6 +41,7 @@
     GMSPlacesClient *placesClient = [GMSPlacesClient new];
     GMSAutocompleteFilter *filter = [[GMSAutocompleteFilter alloc] init];
     filter.type = kGMSPlacesAutocompleteTypeFilterCity;
+    
     
     [placesClient autocompleteQuery:searchString
                               bounds:nil
@@ -100,9 +102,18 @@
         }
         
         if (place != nil) {
-            self.selectedLocation = [[CLLocation alloc] initWithLatitude:place.coordinate.latitude longitude:place.coordinate.longitude];
-            
-            [self performSegueWithIdentifier:@"selectedCity" sender:self];
+            GMSGeocoder *geo = [GMSGeocoder new];
+            [geo reverseGeocodeCoordinate:CLLocationCoordinate2DMake(place.coordinate.latitude, place.coordinate.longitude) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error){
+                NSLog(@"%@, %@",[[response firstResult] locality], [[response firstResult] administrativeArea]);
+                
+                [self.selectedLocation setObject:[[response firstResult] locality] forKey:@"city"];
+                [self.selectedLocation setObject:[[response firstResult] administrativeArea] forKey:@"state"];
+                [self.selectedLocation setObject:[[response firstResult] country] forKey:@"country"];
+                [self.selectedLocation setObject:[NSNumber numberWithFloat:place.coordinate.latitude] forKey:@"lat"];
+                [self.selectedLocation setObject:[NSNumber numberWithFloat:place.coordinate.longitude] forKey:@"lng"];
+                
+                [self performSegueWithIdentifier:@"selectedCity" sender:self];
+            }];
         }
     }];
 }

@@ -28,7 +28,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     NSArray *compareLocations = [[NSArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"]];
     if (compareLocations.count > 0) {
         NSNumber *lat = [[compareLocations firstObject] valueForKey:@"lat"];
-        NSNumber *lng = [[compareLocations firstObject] valueForKey:@"long"];
+        NSNumber *lng = [[compareLocations firstObject] valueForKey:@"lng"];
         
         CLLocationDegrees latitude = [lat floatValue];
         CLLocationDegrees longitude = [lng floatValue];
@@ -177,8 +177,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     LocationSearchTableViewController *searchVC = (LocationSearchTableViewController *) segue.sourceViewController;
     NSLog(@"Newly selected city: %@", searchVC.selectedLocation);
     
-    //New location.
-    [self newLocationFromLat:[NSNumber numberWithFloat:searchVC.selectedLocation.coordinate.latitude] andLong:[NSNumber numberWithFloat:searchVC.selectedLocation.coordinate.longitude]];
+    //New location from dictonary.
+    [self newLocationFromLat:[searchVC.selectedLocation copy]];
 
 }
 
@@ -197,13 +197,10 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 }
 
 //When a location is added a new view is added to the scroll view with paging enabled.
--(void)newLocationFromLat:(NSNumber *)lat andLong:(NSNumber *)lng {
+-(void)newLocationFromLat:(NSDictionary *)location {
     //Variables
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
     NSString *locationsKey = @"savedLocations";
-    
-    //Create CZWeatherLocation object to be stored in the array.
-    NSDictionary *location = @{@"lat":lat,@"long":lng};
     
     //If the array is yet to be stored, create it.
     if (![d arrayForKey:locationsKey]) {
@@ -235,8 +232,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"savedLocation"];
     
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%f", [[[[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"] objectAtIndex:indexPath.row] valueForKey:@"lat"] floatValue]];
+    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [[l objectAtIndex:indexPath.row] valueForKey:@"city"], [[l objectAtIndex:indexPath.row] valueForKey:@"state"]];
     
     return cell;
 }

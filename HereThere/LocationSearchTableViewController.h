@@ -13,5 +13,5 @@
 - (IBAction)dismissSearchController:(id)sender;
 @property (weak, nonatomic) IBOutlet UISearchBar *geoSearchBar;
 @property (nonatomic) NSMutableArray *searchResults;
-@property (nonatomic) CLLocation *selectedLocation;
+@property (nonatomic) NSMutableDictionary *selectedLocation;
 @end
