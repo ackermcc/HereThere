@@ -34,6 +34,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         CLLocationDegrees longitude = [lng floatValue];
         
         CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+        NSLog(@"I made it here with %@", aLocation);
         [self returnWeatherForLocation:aLocation forCurrentView:NO];
     }
     
@@ -84,7 +85,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 }
 
 -(void)returnWeatherForLocation:(CLLocation *)location forCurrentView:(BOOL)current {
-    CZWundergroundRequest *request = [CZWundergroundRequest newConditionsRequest];
+//    CZWundergroundRequest *request = [CZWundergroundRequest newConditionsRequest];
     CZWundergroundRequest *forecastRequest = [CZWundergroundRequest newHourlyRequest];
     WeatherData *weather = [WeatherData new];
     
@@ -92,41 +93,50 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 //    NSDate *prevTimedate = [currentTimedate dateByAddingTimeInterval:-3*60*60];
 //    CZWundergroundRequest *historicalRequest = [CZWundergroundRequest newHistoryRequestForDate:prevTimedate];
     
-    request.location = [CZWeatherLocation locationFromLocation:location];
+//    request.location = [CZWeatherLocation locationFromLocation:location];
     forecastRequest.location = [CZWeatherLocation locationFromLocation:location];
-    request.key = kWUKey;
+//    request.key = kWUKey;
     forecastRequest.key = kWUKey;
     
-    [request sendWithCompletion:^(CZWeatherData *data, NSError *error) {
-        CZWeatherCurrentCondition *condition = data.current;
-        weather.currTemp = condition.temperature.f;
-        
+//    [request sendWithCompletion:^(CZWeatherData *data, NSError *error) {
+//        CZWeatherCurrentCondition *condition = data.current;
+//        weather.currTemp = condition.temperature.f;
+//        
+//    }];
+    
+    
+    [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
+        if (!error) {
         [[LMGeocoder sharedInstance] reverseGeocodeCoordinate:location.coordinate
                                                       service:kLMGeocoderGoogleService
                                             completionHandler:^(LMAddress *address, NSError *error) {
                                                 if (address && !error) {
+                                                    
+                                                    //Update view with city and state information
                                                     weather.city = address.locality;
                                                     weather.state = address.administrativeArea;
                                                     
+                                                    //For the first 12 items of hourly forcast, add to the array.
+                                                    NSMutableArray *hourly = [NSMutableArray new];
+                                                    for (int i = 0; i < 12; i++) {
+                                                        CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
+                                                        [hourly addObject:[NSNumber numberWithFloat:h.temperature.f]];
+                                                        
+                                                        //Set the current temperature for the first object
+                                                        if (i==0) {
+                                                            weather.currTemp = h.temperature.f;
+                                                        }
+                                                    }
+                                                    weather.twelveHourData = [NSArray arrayWithArray:hourly];
+                                                    
+                                                    //Update the view with appropriate data.
+                                                    [self updateChartsWithData:weather forCurrentView:current];
                                                     [self updateViewWithWeather:weather forCurrentView:current];
                                                 }
                                                 else {
                                                     NSLog(@"Error: %@", error.description);
                                                 }
                                             }];
-    }];
-    
-    
-    [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
-        if (!error) {
-            //For the first 12 items of hourly forcast, add to the array.
-            NSMutableArray *hourly = [NSMutableArray new];
-            for (int i = 0; i < 12; i++) {
-                CZWeatherHourlyCondition *h = [data.hourlyForecasts objectAtIndex:i];
-                [hourly addObject:[NSNumber numberWithFloat:h.temperature.f]];
-            }
-            weather.twelveHourData = [NSArray arrayWithArray:hourly];
-            [self updateChartsWithData:weather forCurrentView:current];
 
         } else {
             NSLog(@"Error: %@", error.description);

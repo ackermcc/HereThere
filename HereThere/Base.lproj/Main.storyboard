@@ -177,7 +177,7 @@
                                 <rect key="frame" x="0.0" y="332" width="600" height="268"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMs-Zc-WPX" userLabel="degrees">
-                                        <rect key="frame" x="16" y="35" width="568" height="61"/>
+                                        <rect key="frame" x="16" y="156" width="568" height="61"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="568" id="4Bh-yZ-XOx"/>
                                             <constraint firstAttribute="height" constant="61" id="UhP-wj-cTz"/>
@@ -192,7 +192,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yx8-ml-yN0" userLabel="city, state">
-                                        <rect key="frame" x="16" y="106" width="568" height="21"/>
+                                        <rect key="frame" x="16" y="227" width="568" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="nof-od-TD6"/>
                                         </constraints>
@@ -201,7 +201,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1yT-oK-eEo" customClass="BEMSimpleLineGraphView">
-                                        <rect key="frame" x="0.0" y="132" width="600" height="136"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="136"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -259,13 +259,13 @@
                                     <constraint firstItem="iMs-Zc-WPX" firstAttribute="leading" secondItem="0em-to-vRz" secondAttribute="leading" constant="16" id="0Sk-mL-2xK"/>
                                     <constraint firstAttribute="trailing" secondItem="1yT-oK-eEo" secondAttribute="trailing" id="1EA-Yo-8T7"/>
                                     <constraint firstAttribute="trailing" secondItem="Yx8-ml-yN0" secondAttribute="trailing" constant="16" id="Ean-mP-0fR"/>
-                                    <constraint firstItem="iMs-Zc-WPX" firstAttribute="top" secondItem="0em-to-vRz" secondAttribute="top" constant="35" id="MF8-le-uvS"/>
+                                    <constraint firstItem="iMs-Zc-WPX" firstAttribute="top" secondItem="0em-to-vRz" secondAttribute="top" constant="156" id="MF8-le-uvS"/>
                                     <constraint firstAttribute="trailing" secondItem="iMs-Zc-WPX" secondAttribute="trailing" constant="16" id="OzB-W8-THN"/>
-                                    <constraint firstAttribute="bottom" secondItem="1yT-oK-eEo" secondAttribute="bottom" id="TgW-ah-IKG"/>
+                                    <constraint firstAttribute="bottom" secondItem="1yT-oK-eEo" secondAttribute="bottom" constant="132" id="TgW-ah-IKG"/>
                                     <constraint firstItem="1yT-oK-eEo" firstAttribute="leading" secondItem="0em-to-vRz" secondAttribute="leading" id="U64-Vg-z26"/>
                                     <constraint firstAttribute="bottom" secondItem="Yx8-ml-yN0" secondAttribute="bottom" constant="5" id="YJT-sx-xcO"/>
                                     <constraint firstItem="Yx8-ml-yN0" firstAttribute="top" secondItem="iMs-Zc-WPX" secondAttribute="bottom" constant="10" id="c1e-9X-jx5"/>
-                                    <constraint firstItem="1yT-oK-eEo" firstAttribute="top" secondItem="Yx8-ml-yN0" secondAttribute="bottom" constant="5" id="gfL-PJ-BWX"/>
+                                    <constraint firstItem="1yT-oK-eEo" firstAttribute="top" secondItem="Yx8-ml-yN0" secondAttribute="bottom" constant="-248" id="gfL-PJ-BWX"/>
                                     <constraint firstItem="Yx8-ml-yN0" firstAttribute="leading" secondItem="0em-to-vRz" secondAttribute="leading" constant="16" id="pgj-Iu-8ff"/>
                                 </constraints>
                                 <variation key="default">
