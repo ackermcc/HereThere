@@ -13,6 +13,10 @@
 #import "LMGeocoder.h"
 #import "BEMSimpleLineGraphView.h"
 
+#import "JBChartView.h"
+#import "JBBarChartView.h"
+#import "JBLineChartView.h"
+
 #import "WeatherData.h"
 
 @interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, UIScrollViewDelegate, UITableViewDataSource, UITabBarDelegate>
@@ -33,6 +37,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableSavedLocations;
 
 - (IBAction)changeLocation:(id)sender;
+
+@property (nonatomic) JBLineChartView *lineChartView;
+@property (nonatomic) NSMutableArray *allChartData;
 
 @end
 

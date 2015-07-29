@@ -3,6 +3,7 @@ PODS:
   - CZWeatherKit (2.0.2)
   - GoogleMaps (1.10.1)
   - INTULocationManager (3.0.3)
+  - JBChartView (2.8.14)
   - LMGeocoder (1.0.1)
 
 DEPENDENCIES:
@@ -10,6 +11,7 @@ DEPENDENCIES:
   - CZWeatherKit
   - GoogleMaps
   - INTULocationManager (~> 3.0)
+  - JBChartView
   - LMGeocoder
 
 SPEC CHECKSUMS:
@@ -17,6 +19,7 @@ SPEC CHECKSUMS:
   CZWeatherKit: 843ae78647905ab7455b78cbe6291d27afc408c3
   GoogleMaps: ebf08677f181d9c2dcdbd1721d206f02beccc9b1
   INTULocationManager: e79327803a163f5fec28eb042bb124ed0c6e4876
+  JBChartView: e89eabe6aefabd863ea345f3cedbfb773674647c
   LMGeocoder: c81e081869805cae12d667c85b61e6304d5cebe5
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

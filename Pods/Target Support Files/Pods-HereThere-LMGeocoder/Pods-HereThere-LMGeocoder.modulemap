@@ -1,6 +1,0 @@
-framework module LMGeocoder {
-  umbrella header "Pods-HereThere-LMGeocoder-umbrella.h"
-
-  export *
-  module * { export * }
-}

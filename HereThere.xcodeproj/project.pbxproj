@@ -461,6 +461,7 @@
 		};
 		F3B1C7361B2E63E800F75AA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 05422722694D3EF30C747848 /* Pods-HereThere.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -480,6 +481,7 @@
 		};
 		F3B1C7371B2E63E800F75AA0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69F775CD04AF5034FBE23D28 /* Pods-HereThere.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (

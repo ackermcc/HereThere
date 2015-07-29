@@ -4,22 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-HereThere-BEMSimpleLineGraph.xcscheme</key>
+		<key>BEMSimpleLineGraph.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HereThere-CZWeatherKit.xcscheme</key>
+		<key>CZWeatherKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HereThere-INTULocationManager.xcscheme</key>
+		<key>INTULocationManager.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HereThere-LMGeocoder.xcscheme</key>
+		<key>JBChartView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>LMGeocoder.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -32,27 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>04DEF90A12DE98DF70317AAB</key>
+		<key>25629B1C086FB96A212BC4E5CB140CE6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>40AB25DA353CA1C21131AF49</key>
+		<key>2B80B57578036C013D87F35C3B037D33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>52B84BF9BE72D070742F0867</key>
+		<key>6F2335C3DD655F57FD8A9B7809B53B31</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6CDAD60236B914F8CEB3BDA5</key>
+		<key>75D32775B9DFE0E3CB811B0F58A0E6EE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9AACB501D346E010F0632222</key>
+		<key>E8722909D62A8CB0FECAA999CC2531A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EE5F9FFB2DEECD4EC7433DBB6C429856</key>
 		<dict>
 			<key>primary</key>
 			<true/>

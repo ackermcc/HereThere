@@ -24,6 +24,14 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //Testing JB charting
+    self.lineChartView = [[JBLineChartView alloc] init];
+    self.lineChartView.frame = CGRectMake(0, self.view.frame.size.height/2, self.view.frame.size.width, self.view.frame.size.height/5);
+    self.lineChartView.dataSource = self;
+    self.lineChartView.delegate = self;
+    [self.view addSubview:self.lineChartView];
+    self.allChartData = [NSMutableArray new];
+    
     //If any compared locations exist, load the first one.
     NSArray *compareLocations = [[NSArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"]];
     if (compareLocations.count > 0) {
@@ -59,6 +67,30 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
     [self getCurrentLocation];
     [self.tableSavedLocations reloadData];
+}
+
+- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
+{
+    return 2; // number of lines in chart
+}
+
+- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
+{
+    return [self.currLocHourlyData count]; // Number of points in the graph.
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
+{
+    [self.allChartData removeAllObjects];
+    [self.allChartData addObject:self.currLocHourlyData];
+    [self.allChartData addObject:self.compLocHourlyData];
+    
+    if (lineIndex == 1) {
+        return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
+    } else {
+        return [[self.compLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
+    }
+    return 0;
 }
 
 -(void)getCurrentLocation {
@@ -117,6 +149,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
             //Update the view with appropriate data.
             [self updateChartsWithData:weather forCurrentView:current];
             [self updateViewWithWeather:weather forCurrentView:current];
+            [self.lineChartView reloadData];
 
         } else {
             NSLog(@"Error: %@", error.description);
