@@ -43,16 +43,18 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.compLocHourlyData = [NSMutableArray new];
     
     //chart attributes and style
-    self.chartCurrentWeatherHourly.alwaysDisplayDots = YES;
-    self.chartCurrentWeatherHourly.animationGraphStyle = BEMLineAnimationFade;
+    self.chartCurrentWeatherHourly.alwaysDisplayDots = NO;
+    self.chartCurrentWeatherHourly.animationGraphStyle = BEMLineAnimationDraw;
     self.chartCurrentWeatherHourly.enableTouchReport = YES;
     self.chartCurrentWeatherHourly.enablePopUpReport = YES;
+    self.chartCurrentWeatherHourly.enableBezierCurve = YES;
     self.chartCurrentWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
     
-    self.chartComparedWeatherHourly.alwaysDisplayDots = YES;
-    self.chartComparedWeatherHourly.animationGraphStyle = BEMLineAnimationFade;
+    self.chartComparedWeatherHourly.alwaysDisplayDots = NO;
+    self.chartComparedWeatherHourly.animationGraphStyle = BEMLineAnimationDraw;
     self.chartComparedWeatherHourly.enableTouchReport = YES;
     self.chartComparedWeatherHourly.enablePopUpReport = YES;
+    self.chartComparedWeatherHourly.enableBezierCurve = YES;
     self.chartComparedWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
     
     [self getCurrentLocation];
