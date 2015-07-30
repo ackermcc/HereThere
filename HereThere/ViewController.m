@@ -24,15 +24,14 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //Testing JB charting
+    //Set up JBChart view
     self.lineChartView = [[JBLineChartView alloc] init];
-    self.lineChartView.frame = CGRectMake(0, self.view.frame.size.height/2, self.view.frame.size.width, self.view.frame.size.height/5);
+    self.lineChartView.frame = CGRectMake(0, (self.view.frame.size.height/2) - (self.view.frame.size.height/5) + 11, self.view.frame.size.width, self.view.frame.size.height/5);
     self.lineChartView.dataSource = self;
     self.lineChartView.delegate = self;
     [self.view addSubview:self.lineChartView];
-    self.allChartData = [NSMutableArray new];
     
-    //If any compared locations exist, load the first one.
+    //If any compared locations exist, load the first one on the list.
     NSArray *compareLocations = [[NSArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"]];
     if (compareLocations.count > 0) {
         NSNumber *lat = [[compareLocations firstObject] valueForKey:@"lat"];
@@ -46,51 +45,17 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         [self returnWeatherForLocation:aLocation forCurrentView:NO];
     }
     
-    //graph points array
+    //Set up arrays for collecting historical weather data.
     self.currLocHourlyData = [NSMutableArray new];
     self.compLocHourlyData = [NSMutableArray new];
+    self.allHourlyData = [NSMutableDictionary new];
     
-    //chart attributes and style
-    self.chartCurrentWeatherHourly.alwaysDisplayDots = NO;
-    self.chartCurrentWeatherHourly.animationGraphStyle = BEMLineAnimationDraw;
-    self.chartCurrentWeatherHourly.enableTouchReport = YES;
-    self.chartCurrentWeatherHourly.enablePopUpReport = YES;
-    self.chartCurrentWeatherHourly.enableBezierCurve = YES;
-    self.chartCurrentWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
+    //TODO: Set custom chart attributes and style.
     
-    self.chartComparedWeatherHourly.alwaysDisplayDots = NO;
-    self.chartComparedWeatherHourly.animationGraphStyle = BEMLineAnimationDraw;
-    self.chartComparedWeatherHourly.enableTouchReport = YES;
-    self.chartComparedWeatherHourly.enablePopUpReport = YES;
-    self.chartComparedWeatherHourly.enableBezierCurve = YES;
-    self.chartComparedWeatherHourly.colorBackgroundPopUplabel = [UIColor clearColor];
     
+    //Get current location and update view.
     [self getCurrentLocation];
-    [self.tableSavedLocations reloadData];
-}
-
-- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
-{
-    return 2; // number of lines in chart
-}
-
-- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
-{
-    return [self.currLocHourlyData count]; // Number of points in the graph.
-}
-
-- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
-{
-    [self.allChartData removeAllObjects];
-    [self.allChartData addObject:self.currLocHourlyData];
-    [self.allChartData addObject:self.compLocHourlyData];
-    
-    if (lineIndex == 1) {
-        return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
-    } else {
-        return [[self.compLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
-    }
-    return 0;
+//    [self.tableSavedLocations reloadData];
 }
 
 -(void)getCurrentLocation {
@@ -128,7 +93,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
     [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
         if (!error) {
-            NSLog(@"What is a placemark: %@, %@", data.placemark.locality, data.placemark.administrativeArea);
+//            NSLog(@"What is a placemark: %@, %@", data.placemark.locality, data.placemark.administrativeArea);
             //Update view with city and state information
             weather.city = data.placemark.locality;
             weather.state = data.placemark.administrativeArea;
@@ -147,9 +112,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
             weather.twelveHourData = [NSArray arrayWithArray:hourly];
             
             //Update the view with appropriate data.
-            [self updateChartsWithData:weather forCurrentView:current];
+            [self updateChartWithData:weather forCurrentView:current];
             [self updateViewWithWeather:weather forCurrentView:current];
-            [self.lineChartView reloadData];
 
         } else {
             NSLog(@"Error: %@", error.description);
@@ -171,31 +135,75 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     }
 }
 
-- (void)updateChartsWithData:(WeatherData *)data forCurrentView:(BOOL)current {
-    if (current == YES) {
+//Add new weather data to allHourlyData dictionary and reload the chart.
+- (void)updateChartWithData:(WeatherData *)data forCurrentView:(BOOL)current {
+    if (current) {
         self.currLocHourlyData = [data.twelveHourData mutableCopy];
-        [self.chartCurrentWeatherHourly reloadGraph];
+        [self.allHourlyData setObject:self.currLocHourlyData forKey:@"currentHourlyData"];
     } else {
         self.compLocHourlyData = [data.twelveHourData mutableCopy];
-        [self.chartComparedWeatherHourly reloadGraph];
+        [self.allHourlyData setObject:self.compLocHourlyData forKey:@"comparedHourlyData"];
     }
+    
+    [self.lineChartView reloadData];
 }
 
-- (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
-    if (graph == self.chartCurrentWeatherHourly) {
-        return [self.currLocHourlyData count]; // Number of points in the graph.
-    } else {
-        return [self.compLocHourlyData count]; // Number of points in the graph.
-    }
+//JBChart delegate methods.
+
+- (void)dealloc
+{
+    self.lineChartView.delegate = nil;
+    self.lineChartView.dataSource = nil;
 }
 
-- (CGFloat)lineGraph:(BEMSimpleLineGraphView *)graph valueForPointAtIndex:(NSInteger)index {
-    if (graph == self.chartCurrentWeatherHourly) {
-        return [[self.currLocHourlyData objectAtIndex:index] floatValue]; // The value of the point on the Y-Axis for the index.
-    } else {
-        return [[self.compLocHourlyData objectAtIndex:index] floatValue]; // The value of the point on the Y-Axis for the index.
-    }
+- (NSUInteger)numberOfLinesInLineChartView:(JBLineChartView *)lineChartView
+{
+    return [self.allHourlyData count]; // number of lines in chart
 }
+
+- (NSUInteger)lineChartView:(JBLineChartView *)lineChartView numberOfVerticalValuesAtLineIndex:(NSUInteger)lineIndex
+{
+    return 12; // Number of points in the graph.
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
+{
+    //Load historical data based on line index.
+    if (lineIndex == 1) {
+        if ([self.allHourlyData objectForKey:@"currentHourlyData"]) {
+            NSLog(@"Line 1: current");
+            return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
+        } else {
+            NSLog(@"Line 1: compared");
+            return [[self.compLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
+        }
+    } else {
+        if ([self.allHourlyData objectForKey:@"comparedHourlyData"]) {
+            NSLog(@"Line 2: compared");
+            return [[self.compLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
+        } else {
+            NSLog(@"Line 2: current");
+            return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
+        }
+    }
+    return 0;
+}
+
+//- (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
+//    if (graph == self.chartCurrentWeatherHourly) {
+//        return [self.currLocHourlyData count]; // Number of points in the graph.
+//    } else {
+//        return [self.compLocHourlyData count]; // Number of points in the graph.
+//    }
+//}
+//
+//- (CGFloat)lineGraph:(BEMSimpleLineGraphView *)graph valueForPointAtIndex:(NSInteger)index {
+//    if (graph == self.chartCurrentWeatherHourly) {
+//        return [[self.currLocHourlyData objectAtIndex:index] floatValue]; // The value of the point on the Y-Axis for the index.
+//    } else {
+//        return [[self.compLocHourlyData objectAtIndex:index] floatValue]; // The value of the point on the Y-Axis for the index.
+//    }
+//}
 
 -(void)unwindFromLocationSearchController:(UIStoryboardSegue *)segue {
     LocationSearchTableViewController *searchVC = (LocationSearchTableViewController *) segue.sourceViewController;
@@ -204,6 +212,12 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     //New location from dictonary.
     [self newLocationFromLat:[searchVC.selectedLocation copy]];
 
+}
+
+-(void)unwindFromSavedLocations:(UIStoryboardSegue *)segue {
+    SavedLocationsTableViewController *savecVC = (SavedLocationsTableViewController *) segue.sourceViewController;
+    
+    [self returnWeatherForLocation:savecVC.selectedLocation forCurrentView:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -217,14 +231,14 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 //When the user selectes to change, slide the compared weather view down and show the tableview for selection.
 - (IBAction)changeLocation:(id)sender {
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y * 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
-    } completion:^(BOOL complete){
-        
-    }];
+//    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y * 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
+//    } completion:^(BOOL complete){
+//        
+//    }];
 }
 
-//When a location is added a new view is added to the scroll view with paging enabled.
+//When a location is added a new view is added.
 -(void)newLocationFromLat:(NSDictionary *)location {
     //Variables
     NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
@@ -256,39 +270,38 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
     CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
     [self returnWeatherForLocation:aLocation forCurrentView:NO];
-    [self.tableSavedLocations reloadData];
 }
 
 //Set up tableview for saved locations
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"] count];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"savedLocation"];
-    
-    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [[l objectAtIndex:indexPath.row] valueForKey:@"city"], [[l objectAtIndex:indexPath.row] valueForKey:@"state"]];
-    
-    return cell;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
-    NSNumber *lat = [[l objectAtIndex:indexPath.row] valueForKey:@"lat"];
-    NSNumber *lng = [[l objectAtIndex:indexPath.row] valueForKey:@"lng"];
-    
-    CLLocationDegrees latitude = [lat floatValue];
-    CLLocationDegrees longitude = [lng floatValue];
-    
-    CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-    [self returnWeatherForLocation:aLocation forCurrentView:NO];
-    
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y / 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
-    } completion:^(BOOL complete){
-        [self.tableSavedLocations deselectRowAtIndexPath:indexPath animated:YES];
-    }];
-}
+//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//    return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"] count];
+//}
+//
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"savedLocation"];
+//    
+//    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
+//    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [[l objectAtIndex:indexPath.row] valueForKey:@"city"], [[l objectAtIndex:indexPath.row] valueForKey:@"state"]];
+//    
+//    return cell;
+//}
+//
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
+//    NSNumber *lat = [[l objectAtIndex:indexPath.row] valueForKey:@"lat"];
+//    NSNumber *lng = [[l objectAtIndex:indexPath.row] valueForKey:@"lng"];
+//    
+//    CLLocationDegrees latitude = [lat floatValue];
+//    CLLocationDegrees longitude = [lng floatValue];
+//    
+//    CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+//    [self returnWeatherForLocation:aLocation forCurrentView:NO];
+//    
+//    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y / 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
+//    } completion:^(BOOL complete){
+//        [self.tableSavedLocations deselectRowAtIndexPath:indexPath animated:YES];
+//    }];
+//}
 
 @end

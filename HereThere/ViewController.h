@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "LocationSearchTableViewController.h"
+#import "SavedLocationsTableViewController.h"
 #import "CZWeatherKit.h"
 #import "INTULocationManager.h"
 #import "LMGeocoder.h"
-#import "BEMSimpleLineGraphView.h"
+//#import "BEMSimpleLineGraphView.h"
 
 #import "JBChartView.h"
 #import "JBBarChartView.h"
@@ -19,27 +20,29 @@
 
 #import "WeatherData.h"
 
-@interface ViewController : UIViewController <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate, UIScrollViewDelegate, UITableViewDataSource, UITabBarDelegate>
+@interface ViewController : UIViewController <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *viewCurrentWeather;
-@property (weak, nonatomic) IBOutlet UIView *viewComparedWeather;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationCityState;
-@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;
-@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartComparedWeatherHourly;
 @property (weak, nonatomic) IBOutlet UILabel *lblComparedWeatherLocationTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lblComparedLocationCityState;
 
 @property (nonatomic) NSMutableArray *currLocHourlyData;
 @property (nonatomic) NSMutableArray *compLocHourlyData;
+@property (nonatomic) NSMutableDictionary *allHourlyData;
+
 - (IBAction)refreshWeatherData:(id)sender;
-
-@property (weak, nonatomic) IBOutlet UITableView *tableSavedLocations;
-
-- (IBAction)changeLocation:(id)sender;
+- (IBAction)unwindFromSavedLocations:(UIStoryboardSegue *)segue;
 
 @property (nonatomic) JBLineChartView *lineChartView;
-@property (nonatomic) NSMutableArray *allChartData;
+
+//TODO: get rid of
+//@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;
+//@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartComparedWeatherHourly;
+//@property (weak, nonatomic) IBOutlet UIView *viewCurrentWeather;
+//@property (weak, nonatomic) IBOutlet UIView *viewComparedWeather;
+//@property (weak, nonatomic) IBOutlet UITableView *tableSavedLocations;
+- (IBAction)changeLocation:(id)sender;
 
 @end
 

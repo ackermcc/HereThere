@@ -10,6 +10,7 @@
 		A4B44F22F9CF710799F69BDD /* Pods_HereThere.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025BFD42641E9BB2EE9F7F45 /* Pods_HereThere.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F32EB3951B3309C400B152CB /* LocationSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */; };
 		F35BFB801B4251C3005461EC /* WeatherData.m in Sources */ = {isa = PBXBuildFile; fileRef = F35BFB7F1B4251C3005461EC /* WeatherData.m */; };
+		F3A381231B69F4BD00BAC8FE /* SavedLocationsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A381221B69F4BD00BAC8FE /* SavedLocationsTableViewController.m */; };
 		F3B1C7151B2E63E800F75AA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B1C7141B2E63E800F75AA0 /* main.m */; };
 		F3B1C7181B2E63E800F75AA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B1C7171B2E63E800F75AA0 /* AppDelegate.m */; };
 		F3B1C71B1B2E63E800F75AA0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B1C71A1B2E63E800F75AA0 /* ViewController.m */; };
@@ -37,6 +38,8 @@
 		F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchTableViewController.m; sourceTree = "<group>"; };
 		F35BFB7E1B4251C3005461EC /* WeatherData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherData.h; sourceTree = "<group>"; };
 		F35BFB7F1B4251C3005461EC /* WeatherData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherData.m; sourceTree = "<group>"; };
+		F3A381211B69F4BD00BAC8FE /* SavedLocationsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavedLocationsTableViewController.h; sourceTree = "<group>"; };
+		F3A381221B69F4BD00BAC8FE /* SavedLocationsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavedLocationsTableViewController.m; sourceTree = "<group>"; };
 		F3B1C70F1B2E63E800F75AA0 /* HereThere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HereThere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B1C7131B2E63E800F75AA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3B1C7141B2E63E800F75AA0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -119,6 +122,8 @@
 				F35BFB7F1B4251C3005461EC /* WeatherData.m */,
 				F32EB3931B3309C400B152CB /* LocationSearchTableViewController.h */,
 				F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */,
+				F3A381211B69F4BD00BAC8FE /* SavedLocationsTableViewController.h */,
+				F3A381221B69F4BD00BAC8FE /* SavedLocationsTableViewController.m */,
 				F3B1C71C1B2E63E800F75AA0 /* Main.storyboard */,
 				F3B1C71F1B2E63E800F75AA0 /* Images.xcassets */,
 				F3B1C7211B2E63E800F75AA0 /* LaunchScreen.xib */,
@@ -307,6 +312,7 @@
 			files = (
 				F35BFB801B4251C3005461EC /* WeatherData.m in Sources */,
 				F32EB3951B3309C400B152CB /* LocationSearchTableViewController.m in Sources */,
+				F3A381231B69F4BD00BAC8FE /* SavedLocationsTableViewController.m in Sources */,
 				F3B1C71B1B2E63E800F75AA0 /* ViewController.m in Sources */,
 				F3B1C7181B2E63E800F75AA0 /* AppDelegate.m in Sources */,
 				F3B1C7151B2E63E800F75AA0 /* main.m in Sources */,
@@ -390,6 +396,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -426,6 +433,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
