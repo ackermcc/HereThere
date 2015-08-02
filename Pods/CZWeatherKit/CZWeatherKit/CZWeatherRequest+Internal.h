@@ -50,12 +50,12 @@
 /**
  @warning Not for external use.
  */
-- (void)dispatchWithAPI:(Class)API
+- (void)dispatchWithAPI:(id<CZWeatherAPI>)API
              completion:(CZWeatherRequestCompletion)completion;
 
 /**
  @warning Not for external use.
  */
-@property (readonly, NS_NONATOMIC_IOSONLY) Class API;
+@property (readonly, NS_NONATOMIC_IOSONLY) id<CZWeatherAPI> API;
 
 @end

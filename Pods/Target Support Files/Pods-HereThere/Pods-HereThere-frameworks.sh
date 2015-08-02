@@ -52,16 +52,16 @@ code_sign_if_enabled() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework 'Pods-HereThere/BEMSimpleLineGraph.framework'
   install_framework 'Pods-HereThere/CZWeatherKit.framework'
   install_framework 'Pods-HereThere/INTULocationManager.framework'
   install_framework 'Pods-HereThere/JBChartView.framework'
   install_framework 'Pods-HereThere/LMGeocoder.framework'
+  install_framework 'Pods-HereThere/PINCache.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework 'Pods-HereThere/BEMSimpleLineGraph.framework'
   install_framework 'Pods-HereThere/CZWeatherKit.framework'
   install_framework 'Pods-HereThere/INTULocationManager.framework'
   install_framework 'Pods-HereThere/JBChartView.framework'
   install_framework 'Pods-HereThere/LMGeocoder.framework'
+  install_framework 'Pods-HereThere/PINCache.framework'
 fi

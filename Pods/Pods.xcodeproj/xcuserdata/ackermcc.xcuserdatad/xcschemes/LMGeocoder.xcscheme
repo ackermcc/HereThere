@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BBBACBD15C96F69DED97505A"
+               BlueprintIdentifier = "65229E4CC4D7A275215CE7A6"
                BuildableName = "LMGeocoder.framework"
                BlueprintName = "LMGeocoder"
                ReferencedContainer = "container:Pods.xcodeproj">

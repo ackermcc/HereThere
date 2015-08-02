@@ -50,12 +50,38 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.compLocHourlyData = [NSMutableArray new];
     self.allHourlyData = [NSMutableDictionary new];
     
-    //TODO: Set custom chart attributes and style.
-    
+    //Set style for labels
+    UIColor *currentColor = [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
+    UIColor *compareColor = [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
+    self.lblCurrentLocationTemp.textColor = currentColor;
+    self.lblCurrentLocationCityState.textColor = currentColor;
+    self.lblComparedWeatherLocationTemp.textColor = compareColor;
+    self.lblComparedLocationCityState.textColor = compareColor;
+    self.lblComparedConditionClimacon.textColor = compareColor;
+    self.lblCurrConditionClimacon.textColor = currentColor;
     
     //Get current location and update view.
     [self getCurrentLocation];
 //    [self.tableSavedLocations reloadData];
+}
+
+//TODO: Set custom chart attributes and style.
+- (BOOL)lineChartView:(JBLineChartView *)lineChartView smoothLineAtLineIndex:(NSUInteger)lineIndex {
+    return NO;
+}
+
+- (UIColor *)lineChartView:(JBLineChartView *)lineChartView colorForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    if (lineIndex == 1) {
+        return [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
+    } else {
+        return [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
+    }
+}
+
+- (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return 2.0;
 }
 
 -(void)getCurrentLocation {
@@ -107,6 +133,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
                 //Set the current temperature for the first object
                 if (i==0) {
                     weather.currTemp = h.temperature.f;
+                    weather.summary = h.summary;
+                    weather.climacon = h.climacon;
                 }
             }
             weather.twelveHourData = [NSArray arrayWithArray:hourly];
@@ -128,9 +156,11 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (void)updateViewWithWeather:(WeatherData *)data forCurrentView:(BOOL)current {
     if (current == YES) {
         self.lblCurrentLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", data.currTemp];
+        self.lblCurrConditionClimacon.text = [NSString stringWithFormat:@"%c", data.climacon];
         self.lblCurrentLocationCityState.text = [NSString stringWithFormat:@"%@, %@", data.city, data.state];
     } else {
         self.lblComparedWeatherLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", data.currTemp];
+        self.lblComparedConditionClimacon.text = [NSString stringWithFormat:@"%c", data.climacon];
         self.lblComparedLocationCityState.text = [NSString stringWithFormat:@"%@, %@", data.city, data.state];
     }
 }
@@ -171,18 +201,18 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     //Load historical data based on line index.
     if (lineIndex == 1) {
         if ([self.allHourlyData objectForKey:@"currentHourlyData"]) {
-            NSLog(@"Line 1: current");
+//            NSLog(@"Line 1: current");
             return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
         } else {
-            NSLog(@"Line 1: compared");
+//            NSLog(@"Line 1: compared");
             return [[self.compLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
         }
     } else {
         if ([self.allHourlyData objectForKey:@"comparedHourlyData"]) {
-            NSLog(@"Line 2: compared");
+//            NSLog(@"Line 2: compared");
             return [[self.compLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
         } else {
-            NSLog(@"Line 2: current");
+//            NSLog(@"Line 2: current");
             return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
         }
     }
@@ -216,8 +246,9 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 -(void)unwindFromSavedLocations:(UIStoryboardSegue *)segue {
     SavedLocationsTableViewController *savecVC = (SavedLocationsTableViewController *) segue.sourceViewController;
-    
-    [self returnWeatherForLocation:savecVC.selectedLocation forCurrentView:NO];
+    if (savecVC.selectedLocation) {
+        [self returnWeatherForLocation:savecVC.selectedLocation forCurrentView:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

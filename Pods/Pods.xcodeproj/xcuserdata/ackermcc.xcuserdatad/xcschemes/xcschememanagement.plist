@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>BEMSimpleLineGraph.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>CZWeatherKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -29,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PINCache.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-HereThere.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,32 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>25629B1C086FB96A212BC4E5CB140CE6</key>
+		<key>27656C0DDF10F90C0FB07A7EB7D7238D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2B80B57578036C013D87F35C3B037D33</key>
+		<key>2F819FAADD3B61412003466807661473</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6F2335C3DD655F57FD8A9B7809B53B31</key>
+		<key>A6CFBC3C8106786C01D38585435C7FD2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>75D32775B9DFE0E3CB811B0F58A0E6EE</key>
+		<key>DBB105F3AECDDD8307DAA64EB690C65B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8722909D62A8CB0FECAA999CC2531A5</key>
+		<key>ECC7520985E82F4192D6C5641AC04070</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EE5F9FFB2DEECD4EC7433DBB6C429856</key>
+		<key>EF8A1E1961C108D7695021F9E2410D74</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -17,6 +17,8 @@
 @property (copy) NSString *state;
 @property float currTemp;
 @property (copy) NSArray *twelveHourData;
+@property (copy) NSString *summary;
+@property Climacon climacon;
 
 -(id)init;
 

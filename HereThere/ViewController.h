@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrentLocationCityState;
 @property (weak, nonatomic) IBOutlet UILabel *lblComparedWeatherLocationTemp;
 @property (weak, nonatomic) IBOutlet UILabel *lblComparedLocationCityState;
+@property (weak, nonatomic) IBOutlet UILabel *lblCurrConditionClimacon;
+@property (weak, nonatomic) IBOutlet UILabel *lblComparedConditionClimacon;
 
 @property (nonatomic) NSMutableArray *currLocHourlyData;
 @property (nonatomic) NSMutableArray *compLocHourlyData;
@@ -35,6 +37,7 @@
 - (IBAction)unwindFromSavedLocations:(UIStoryboardSegue *)segue;
 
 @property (nonatomic) JBLineChartView *lineChartView;
+@property (weak, nonatomic) IBOutlet UIButton *lblAddLocation;
 
 //TODO: get rid of
 //@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;
