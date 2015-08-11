@@ -29,6 +29,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.lineChartView.frame = CGRectMake(0, (self.view.frame.size.height/2) - (self.view.frame.size.height/5) + 11, self.view.frame.size.width, self.view.frame.size.height/5);
     self.lineChartView.dataSource = self;
     self.lineChartView.delegate = self;
+    self.lineChartView.showsLineSelection = NO;
     [self.view addSubview:self.lineChartView];
     
     //If any compared locations exist, load the first one on the list.
@@ -65,14 +66,42 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 //    [self.tableSavedLocations reloadData];
 }
 
+//Return color for difference in temperature.
+-(UIColor *)returnColorDifferenceForHere:(float)here andThere:(float)there {
+    if (here > there) {
+        float percentDifference = (here-there)/((here+there)/2);
+        return [UIColor colorWithRed:1.0-percentDifference green:0.0 blue:1.0 alpha:1.0];
+    } else if (here < there) {
+        float percentDifference = (there-here)/((here+there)/2);
+        return [UIColor colorWithRed:1.0 green:0.0 blue:1.0-percentDifference alpha:1.0];
+    } else {
+        return [UIColor purpleColor];
+    }
+    
+}
+
 //TODO: Set custom chart attributes and style.
 - (BOOL)lineChartView:(JBLineChartView *)lineChartView smoothLineAtLineIndex:(NSUInteger)lineIndex {
     return NO;
 }
 
+//- (JBLineChartViewLineStyle)lineChartView:(JBLineChartView *)lineChartView lineStyleForLineAtLineIndex:(NSUInteger)lineIndex
+//{
+//    return JBLineChartViewLineStyleDashed; // style of line in chart
+//}
+
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView colorForLineAtLineIndex:(NSUInteger)lineIndex
 {
-    if (lineIndex == 1) {
+    if (lineIndex == 0) {
+        return [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
+    } else {
+        return [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
+    }
+}
+
+- (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionColorForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    if (lineIndex == 0) {
         return [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
     } else {
         return [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
@@ -82,6 +111,29 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
 {
     return 2.0;
+}
+
+- (UIColor *)lineChartView:(JBLineChartView *)lineChartView verticalSelectionColorForLineAtLineIndex:(NSUInteger)lineIndex
+{
+    return [UIColor blackColor]; // color of selection view
+}
+
+- (CGFloat)verticalSelectionWidthForLineChartView:(JBLineChartView *)lineChartView
+{
+    return 1.0; // width of selection view
+}
+
+- (void)lineChartView:(JBLineChartView *)lineChartView didSelectLineAtIndex:(NSUInteger)lineIndex horizontalIndex:(NSUInteger)horizontalIndex touchPoint:(CGPoint)touchPoint
+{
+    NSLog(@"Horizontal: %lu", (unsigned long)horizontalIndex);
+    NSLog(@"Touch Point: %.f, %.f", touchPoint.x, touchPoint.y);
+    
+    //If both locations are graphed, update the background color.
+    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
+        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
+        
+        self.view.backgroundColor = viewColor;
+    }
 }
 
 -(void)getCurrentLocation {
@@ -175,6 +227,13 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         [self.allHourlyData setObject:self.compLocHourlyData forKey:@"comparedHourlyData"];
     }
     
+    //If both locations are graphed, update the background color.
+    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
+        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:0] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:0] floatValue]];
+        
+        self.view.backgroundColor = viewColor;
+    }
+    
     [self.lineChartView reloadData];
 }
 
@@ -199,7 +258,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView verticalValueForHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex
 {
     //Load historical data based on line index.
-    if (lineIndex == 1) {
+    if (lineIndex == 0) {
         if ([self.allHourlyData objectForKey:@"currentHourlyData"]) {
 //            NSLog(@"Line 1: current");
             return [[self.currLocHourlyData objectAtIndex:horizontalIndex] floatValue]; // y-position (y-axis) of point at horizontalIndex (x-axis)
