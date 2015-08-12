@@ -24,6 +24,12 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //Alloc compared bg view
+    self.compareBackground = [UIView new];
+    self.compareBackground.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
+    self.compareBackground.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:self.compareBackground];
+    
     //Set up JBChart view
     self.lineChartView = [[JBLineChartView alloc] init];
     self.lineChartView.frame = CGRectMake(0, (self.view.frame.size.height/2) - (self.view.frame.size.height/5) + 11, self.view.frame.size.width, self.view.frame.size.height/5);
@@ -52,8 +58,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.allHourlyData = [NSMutableDictionary new];
     
     //Set style for labels
-    UIColor *currentColor = [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
-    UIColor *compareColor = [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
+    UIColor *currentColor = [UIColor whiteColor];
+    UIColor *compareColor = [UIColor lightGrayColor];
     self.lblCurrentLocationTemp.textColor = currentColor;
     self.lblCurrentLocationCityState.textColor = currentColor;
     self.lblComparedWeatherLocationTemp.textColor = compareColor;
@@ -64,6 +70,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     //Get current location and update view.
     [self getCurrentLocation];
 //    [self.tableSavedLocations reloadData];
+    
+    [self.view sendSubviewToBack:self.compareBackground];
 }
 
 //Return color for difference in temperature.
@@ -93,18 +101,18 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView colorForLineAtLineIndex:(NSUInteger)lineIndex
 {
     if (lineIndex == 0) {
-        return [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
+        return [UIColor whiteColor];
     } else {
-        return [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
+        return [UIColor lightGrayColor];
     }
 }
 
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionColorForLineAtLineIndex:(NSUInteger)lineIndex
 {
     if (lineIndex == 0) {
-        return [UIColor colorWithRed:25.0/255.0 green:63.0/255.0 blue:100.0/255.0 alpha:1.0];
+        return [UIColor whiteColor];
     } else {
-        return [UIColor colorWithRed:83.0/255.0 green:177.0/255.0 blue:157.0/255.0 alpha:1.0];
+        return [UIColor lightGrayColor];
     }
 }
 
@@ -127,13 +135,29 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 {
     NSLog(@"Horizontal: %lu", (unsigned long)horizontalIndex);
     NSLog(@"Touch Point: %.f, %.f", touchPoint.x, touchPoint.y);
+    NSLog(@"Temp for touch: %@, %@", [[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex], [[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex]);
+    
+    //Update temp labels for selected time.
+    self.lblCurrentLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", [[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
+    self.lblComparedWeatherLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", [[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
+    
+    //Update climacons for selected time.
+    CZWeatherHourlyCondition *curr = [self.currWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
+    NSLog(@"Climacon: %c", curr.climacon);
+    self.lblCurrConditionClimacon.text = [NSString stringWithFormat:@"%c", curr.climacon];
+    
+    CZWeatherHourlyCondition *comp = [self.compWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
+    NSLog(@"Climacon: %c", comp.climacon);
+    self.lblComparedConditionClimacon.text = [NSString stringWithFormat:@"%c", comp.climacon];
+    
+    self.compareBackground.frame = CGRectMake(touchPoint.x, 0.0, self.view.frame.size.width-touchPoint.x, self.view.frame.size.height);
     
     //If both locations are graphed, update the background color.
-    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
-        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
-        
-        self.view.backgroundColor = viewColor;
-    }
+//    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
+//        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
+//        
+//        self.view.backgroundColor = viewColor;
+//    }
 }
 
 -(void)getCurrentLocation {
@@ -171,7 +195,12 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     
     [forecastRequest sendWithCompletion:^(CZWeatherData *data, NSError *error) {
         if (!error) {
-//            NSLog(@"What is a placemark: %@, %@", data.placemark.locality, data.placemark.administrativeArea);
+            //Set current hourly condition
+            if (current == YES) {
+                self.currWeatherData = data;
+            } else {
+                self.compWeatherData = data;
+            }
             //Update view with city and state information
             weather.city = data.placemark.locality;
             weather.state = data.placemark.administrativeArea;
@@ -227,12 +256,12 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         [self.allHourlyData setObject:self.compLocHourlyData forKey:@"comparedHourlyData"];
     }
     
-    //If both locations are graphed, update the background color.
-    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
-        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:0] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:0] floatValue]];
-        
-        self.view.backgroundColor = viewColor;
-    }
+//    //If both locations are graphed, update the background color.
+//    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
+//        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:0] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:0] floatValue]];
+//        
+//        self.view.backgroundColor = viewColor;
+//    }
     
     [self.lineChartView reloadData];
 }
@@ -361,37 +390,5 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
     [self returnWeatherForLocation:aLocation forCurrentView:NO];
 }
-
-//Set up tableview for saved locations
-//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"] count];
-//}
-//
-//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"savedLocation"];
-//    
-//    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
-//    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@", [[l objectAtIndex:indexPath.row] valueForKey:@"city"], [[l objectAtIndex:indexPath.row] valueForKey:@"state"]];
-//    
-//    return cell;
-//}
-//
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSArray *l = [[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"];
-//    NSNumber *lat = [[l objectAtIndex:indexPath.row] valueForKey:@"lat"];
-//    NSNumber *lng = [[l objectAtIndex:indexPath.row] valueForKey:@"lng"];
-//    
-//    CLLocationDegrees latitude = [lat floatValue];
-//    CLLocationDegrees longitude = [lng floatValue];
-//    
-//    CLLocation *aLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-//    [self returnWeatherForLocation:aLocation forCurrentView:NO];
-//    
-//    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//        self.viewComparedWeather.frame = CGRectMake(self.viewComparedWeather.frame.origin.x, self.viewComparedWeather.frame.origin.y / 2, self.viewComparedWeather.frame.size.width, self.viewComparedWeather.frame.size.height);
-//    } completion:^(BOOL complete){
-//        [self.tableSavedLocations deselectRowAtIndexPath:indexPath animated:YES];
-//    }];
-//}
 
 @end

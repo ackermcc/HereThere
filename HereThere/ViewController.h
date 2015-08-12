@@ -39,6 +39,12 @@
 @property (nonatomic) JBLineChartView *lineChartView;
 @property (weak, nonatomic) IBOutlet UIButton *lblAddLocation;
 
+@property (nonatomic) UIView *compareBackground;
+
+//Need to refactor later
+@property (nonatomic) CZWeatherData *currWeatherData;
+@property (nonatomic) CZWeatherData *compWeatherData;
+
 //TODO: get rid of
 //@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartCurrentWeatherHourly;
 //@property (weak, nonatomic) IBOutlet BEMSimpleLineGraphView *chartComparedWeatherHourly;
