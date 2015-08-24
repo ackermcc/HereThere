@@ -31,12 +31,14 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     //Add time labels
     self.lblCurrTime = [UILabel new];
     self.lblCurrTime.textColor = [UIColor whiteColor];
+    self.lblCurrTime.backgroundColor = [UIColor darkGrayColor];
     self.lblCurrTime.text = @"12am";
     [self.lblCurrTime sizeToFit];
     [self.lineChartView addSubview:self.lblCurrTime];
     
     self.lblCompTime = [UILabel new];
     self.lblCompTime.textColor = [UIColor whiteColor];
+    self.lblCompTime.backgroundColor = [UIColor darkGrayColor];
     self.lblCompTime.text = @"12am";
     [self.lblCompTime sizeToFit];
     [self.lineChartView addSubview:self.lblCompTime];
@@ -48,6 +50,7 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.lineChartView.delegate = self;
     self.lineChartView.showsLineSelection = NO;
     [self.view addSubview:self.lineChartView];
+    self.lineChartView.clipsToBounds = NO;
     
     //If any compared locations exist, load the first one on the list.
     NSArray *compareLocations = [[NSArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"savedLocations"]];
@@ -77,6 +80,8 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.lblComparedLocationCityState.textColor = compareColor;
     self.lblComparedConditionClimacon.textColor = compareColor;
     self.lblCurrConditionClimacon.textColor = currentColor;
+    self.lblCompTime.textColor = compareColor;
+    self.lblCurrTime.textColor = currentColor;
     
     //Get current location and update view.
     [self getCurrentLocation];
@@ -188,13 +193,33 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     [formatter setDateFormat:@"ha"];
     self.lblCurrTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:curr.date] lowercaseString]];
     self.lblCompTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:comp.date] lowercaseString]];
-    //Vertical data point / (chartMax - chartMin) = % Height of chart
+    
+    //Vertical data point - chartMin / (chartMax - chartMin) = % Height of chart
     float chartHeight = self.lineChartView.frame.size.height;
     float currPercentHeight = (currSelectedTemp - self.chartMin) / (self.chartMax - self.chartMin);
     float compPercentHeight = (compSelectedTemp - self.chartMin) / (self.chartMax - self.chartMin);
-    //% Height * Actual Height
-    self.lblCurrTime.center = CGPointMake(touchPoint.x, chartHeight - (currPercentHeight * chartHeight));
-    self.lblCompTime.center = CGPointMake(touchPoint.x, chartHeight - (compPercentHeight * chartHeight));
+    
+    //Chart Height - % Height * Actual Height
+    //Change padding based on data location
+    float MAXPADDING = -30;
+    float MINPADDING = 30;
+    
+    if (curr.temperature.f > comp.temperature.f) {
+        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.lblCurrTime.center = CGPointMake(touchPoint.x, (chartHeight - (currPercentHeight * chartHeight)) + MAXPADDING);
+            self.lblCompTime.center = CGPointMake(touchPoint.x, (chartHeight - (compPercentHeight * chartHeight)) + MINPADDING);
+        } completion:nil];
+    } else if (curr.temperature.f < comp.temperature.f) {
+        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.lblCurrTime.center = CGPointMake(touchPoint.x, (chartHeight - (currPercentHeight * chartHeight)) + MINPADDING);
+            self.lblCompTime.center = CGPointMake(touchPoint.x, (chartHeight - (compPercentHeight * chartHeight)) + MAXPADDING);
+        } completion:nil];
+    }  else {
+        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.lblCurrTime.center = CGPointMake(touchPoint.x, (chartHeight - (currPercentHeight * chartHeight)) + MAXPADDING);
+            self.lblCompTime.center = CGPointMake(touchPoint.x, (chartHeight - (compPercentHeight * chartHeight)) + MINPADDING);
+        } completion:nil];
+    }
 }
 
 -(void)getCurrentLocation {
