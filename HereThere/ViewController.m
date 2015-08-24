@@ -24,15 +24,26 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //Alloc compared bg view
-    self.compareBackground = [UIView new];
-    self.compareBackground.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
-    self.compareBackground.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:self.compareBackground];
-    
     //Set up JBChart view
     self.lineChartView = [[JBLineChartView alloc] init];
-    self.lineChartView.frame = CGRectMake(0, (self.view.frame.size.height/2) - (self.view.frame.size.height/5) + 11, self.view.frame.size.width, self.view.frame.size.height/5);
+    self.lineChartView.frame = CGRectMake(0.0, self.view.frame.size.height-(self.view.frame.size.height/3)-100.0, self.view.frame.size.width, self.view.frame.size.height/3);
+    
+    //Add time labels
+    self.lblCurrTime = [UILabel new];
+    self.lblCurrTime.textColor = [UIColor whiteColor];
+    self.lblCurrTime.text = @"12am";
+    [self.lblCurrTime sizeToFit];
+    [self.lineChartView addSubview:self.lblCurrTime];
+    
+    self.lblCompTime = [UILabel new];
+    self.lblCompTime.textColor = [UIColor whiteColor];
+    self.lblCompTime.text = @"12am";
+    [self.lblCompTime sizeToFit];
+    [self.lineChartView addSubview:self.lblCompTime];
+    
+    self.lblCompTime.hidden = true;
+    self.lblCurrTime.hidden = true;
+    
     self.lineChartView.dataSource = self;
     self.lineChartView.delegate = self;
     self.lineChartView.showsLineSelection = NO;
@@ -70,8 +81,6 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     //Get current location and update view.
     [self getCurrentLocation];
 //    [self.tableSavedLocations reloadData];
-    
-    [self.view sendSubviewToBack:self.compareBackground];
 }
 
 //Return color for difference in temperature.
@@ -93,10 +102,31 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     return NO;
 }
 
-//- (JBLineChartViewLineStyle)lineChartView:(JBLineChartView *)lineChartView lineStyleForLineAtLineIndex:(NSUInteger)lineIndex
-//{
-//    return JBLineChartViewLineStyleDashed; // style of line in chart
+//- (UIView *)lineChartView:(JBLineChartView *)lineChartView dotViewAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex {
+//    CZWeatherHourlyCondition *curr = [self.currWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
+//    CZWeatherHourlyCondition *comp = [self.compWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
+//    NSDateFormatter *formatter = [NSDateFormatter new];
+//    [formatter setDateFormat:@"ha"];
+//    if (lineIndex == 0) {
+//        self.lblCurrTime = [UILabel new];
+//        self.lblCurrTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:curr.date] lowercaseString]];
+//        [self.lblCurrTime sizeToFit];
+//        self.lblCurrTime.textColor = [UIColor whiteColor];
+//        self.lblCurrTime.hidden = true;
+//        return self.lblCurrTime;
+//    } else {
+//        UILabel *time = [UILabel new];
+//        time.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:comp.date] lowercaseString]];
+//        [time sizeToFit];
+//        time.textColor = [UIColor whiteColor];
+//        time.hidden = true;
+//        return time;
+//    }
 //}
+
+- (BOOL)lineChartView:(JBLineChartView *)lineChartView showsDotsForLineAtLineIndex:(NSUInteger)lineIndex {
+    return NO;
+}
 
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView colorForLineAtLineIndex:(NSUInteger)lineIndex
 {
@@ -128,36 +158,43 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 
 - (CGFloat)verticalSelectionWidthForLineChartView:(JBLineChartView *)lineChartView
 {
-    return 1.0; // width of selection view
+    return 0.0; // width of selection view
 }
 
 - (void)lineChartView:(JBLineChartView *)lineChartView didSelectLineAtIndex:(NSUInteger)lineIndex horizontalIndex:(NSUInteger)horizontalIndex touchPoint:(CGPoint)touchPoint
 {
-    NSLog(@"Horizontal: %lu", (unsigned long)horizontalIndex);
-    NSLog(@"Touch Point: %.f, %.f", touchPoint.x, touchPoint.y);
-    NSLog(@"Temp for touch: %@, %@", [[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex], [[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex]);
+    if (self.lblCurrTime.hidden || self.lblCompTime.hidden) {
+        self.lblCurrTime.hidden = false;
+        self.lblCompTime.hidden = false;
+    }
+    //Retrieve current temperature for selected value.
+    float currSelectedTemp = [[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue];
+    float compSelectedTemp = [[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue];
+    
+    //Current condition for selected time.
+    CZWeatherHourlyCondition *curr = [self.currWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
+    CZWeatherHourlyCondition *comp = [self.compWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
     
     //Update temp labels for selected time.
-    self.lblCurrentLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", [[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
-    self.lblComparedWeatherLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", [[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
+    self.lblCurrentLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", currSelectedTemp];
+    self.lblComparedWeatherLocationTemp.text = [NSString stringWithFormat:@"%.f\u00B0", compSelectedTemp];
     
     //Update climacons for selected time.
-    CZWeatherHourlyCondition *curr = [self.currWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
-    NSLog(@"Climacon: %c", curr.climacon);
     self.lblCurrConditionClimacon.text = [NSString stringWithFormat:@"%c", curr.climacon];
-    
-    CZWeatherHourlyCondition *comp = [self.compWeatherData.hourlyForecasts objectAtIndex:horizontalIndex];
-    NSLog(@"Climacon: %c", comp.climacon);
     self.lblComparedConditionClimacon.text = [NSString stringWithFormat:@"%c", comp.climacon];
     
-    self.compareBackground.frame = CGRectMake(touchPoint.x, 0.0, self.view.frame.size.width-touchPoint.x, self.view.frame.size.height);
-    
-    //If both locations are graphed, update the background color.
-//    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
-//        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:horizontalIndex] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:horizontalIndex] floatValue]];
-//        
-//        self.view.backgroundColor = viewColor;
-//    }
+    //Update time label for selected time.
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"ha"];
+    self.lblCurrTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:curr.date] lowercaseString]];
+    self.lblCompTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:comp.date] lowercaseString]];
+    //Vertical data point / (chartMax - chartMin) = % Height of chart
+    float chartHeight = self.lineChartView.frame.size.height;
+    float currPercentHeight = (currSelectedTemp - self.chartMin) / (self.chartMax - self.chartMin);
+    float compPercentHeight = (compSelectedTemp - self.chartMin) / (self.chartMax - self.chartMin);
+    //% Height * Actual Height
+    self.lblCurrTime.center = CGPointMake(touchPoint.x, chartHeight - (currPercentHeight * chartHeight));
+    self.lblCompTime.center = CGPointMake(touchPoint.x, chartHeight - (compPercentHeight * chartHeight));
 }
 
 -(void)getCurrentLocation {
@@ -256,12 +293,22 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
         [self.allHourlyData setObject:self.compLocHourlyData forKey:@"comparedHourlyData"];
     }
     
-//    //If both locations are graphed, update the background color.
-//    if ([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
-//        UIColor *viewColor = [self returnColorDifferenceForHere:[[[self.allHourlyData objectForKey:@"currentHourlyData"] objectAtIndex:0] floatValue] andThere:[[[self.allHourlyData objectForKey:@"comparedHourlyData"] objectAtIndex:0] floatValue]];
-//        
-//        self.view.backgroundColor = viewColor;
-//    }
+    //Find the MIN & MAX to calculate and update time label height.
+    if([self.allHourlyData objectForKey:@"currentHourlyData"] && [self.allHourlyData objectForKey:@"comparedHourlyData"]) {
+        NSMutableArray *numbers = [NSMutableArray new];
+        [numbers addObjectsFromArray:[self.allHourlyData objectForKey:@"currentHourlyData"]];
+        [numbers addObjectsFromArray:[self.allHourlyData objectForKey:@"comparedHourlyData"]];
+        
+        self.chartMax = -MAXFLOAT;
+        self.chartMin = MAXFLOAT;
+        for (NSNumber *num in numbers) {
+            float y = num.floatValue;
+            if (y < self.chartMin) self.chartMin = y;
+            if (y > self.chartMax) self.chartMax = y;
+        }
+        NSLog(@"All Numbers:%@, MIN: %.f, MAX: %.f", numbers, self.chartMin, self.chartMax);
+        
+    }
     
     [self.lineChartView reloadData];
 }

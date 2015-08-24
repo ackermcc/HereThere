@@ -6,38 +6,38 @@
 	<dict>
 		<key>CZWeatherKit.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>INTULocationManager.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>JBChartView.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>LMGeocoder.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>PINCache.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods-HereThere.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>27656C0DDF10F90C0FB07A7EB7D7238D</key>
+		<key>2A7CDB9D7C61B468A5EF0080E29813CB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,22 +47,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A6CFBC3C8106786C01D38585435C7FD2</key>
+		<key>3183C642967355DE4C46CA080B1F7B3F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DBB105F3AECDDD8307DAA64EB690C65B</key>
+		<key>6FCCA948EA49A88DA93A225E18E4830E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ECC7520985E82F4192D6C5641AC04070</key>
+		<key>9678ACFB35E270FE8C83E34A3807560F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EF8A1E1961C108D7695021F9E2410D74</key>
+		<key>AA08E24423F44F9DB325B73C3499F55B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

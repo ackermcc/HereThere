@@ -39,7 +39,10 @@
 @property (nonatomic) JBLineChartView *lineChartView;
 @property (weak, nonatomic) IBOutlet UIButton *lblAddLocation;
 
-@property (nonatomic) UIView *compareBackground;
+@property (nonatomic) UILabel *lblCurrTime;
+@property (nonatomic) UILabel *lblCompTime;
+@property (nonatomic) float chartMax;
+@property (nonatomic) float chartMin;
 
 //Need to refactor later
 @property (nonatomic) CZWeatherData *currWeatherData;
