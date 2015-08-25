@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A4B44F22F9CF710799F69BDD /* Pods_HereThere.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025BFD42641E9BB2EE9F7F45 /* Pods_HereThere.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CE088D951B8C2D380040BECD /* UIColor+HTWColors.m in Sources */ = {isa = PBXBuildFile; fileRef = CE088D941B8C2D380040BECD /* UIColor+HTWColors.m */; };
 		F30C04351B6B4D8900F4FC07 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F30C04341B6B4D8900F4FC07 /* FontAwesome.ttf */; };
 		F30C04371B6B526800F4FC07 /* Climacons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F30C04361B6B526800F4FC07 /* Climacons.ttf */; };
 		F32EB3951B3309C400B152CB /* LocationSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */; };
@@ -36,6 +37,8 @@
 		025BFD42641E9BB2EE9F7F45 /* Pods_HereThere.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HereThere.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		05422722694D3EF30C747848 /* Pods-HereThere.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HereThere.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HereThere/Pods-HereThere.debug.xcconfig"; sourceTree = "<group>"; };
 		69F775CD04AF5034FBE23D28 /* Pods-HereThere.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HereThere.release.xcconfig"; path = "Pods/Target Support Files/Pods-HereThere/Pods-HereThere.release.xcconfig"; sourceTree = "<group>"; };
+		CE088D931B8C2D380040BECD /* UIColor+HTWColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HTWColors.h"; sourceTree = "<group>"; };
+		CE088D941B8C2D380040BECD /* UIColor+HTWColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HTWColors.m"; sourceTree = "<group>"; };
 		F30C04341B6B4D8900F4FC07 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		F30C04361B6B526800F4FC07 /* Climacons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Climacons.ttf; sourceTree = "<group>"; };
 		F32EB3931B3309C400B152CB /* LocationSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationSearchTableViewController.h; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 				F32EB3941B3309C400B152CB /* LocationSearchTableViewController.m */,
 				F3A381211B69F4BD00BAC8FE /* SavedLocationsTableViewController.h */,
 				F3A381221B69F4BD00BAC8FE /* SavedLocationsTableViewController.m */,
+				CE088D931B8C2D380040BECD /* UIColor+HTWColors.h */,
+				CE088D941B8C2D380040BECD /* UIColor+HTWColors.m */,
 				F3B1C71C1B2E63E800F75AA0 /* Main.storyboard */,
 				F3B1C71F1B2E63E800F75AA0 /* Images.xcassets */,
 				F3B1C7211B2E63E800F75AA0 /* LaunchScreen.xib */,
@@ -322,6 +327,7 @@
 				F32EB3951B3309C400B152CB /* LocationSearchTableViewController.m in Sources */,
 				F3A381231B69F4BD00BAC8FE /* SavedLocationsTableViewController.m in Sources */,
 				F3B1C71B1B2E63E800F75AA0 /* ViewController.m in Sources */,
+				CE088D951B8C2D380040BECD /* UIColor+HTWColors.m in Sources */,
 				F3B1C7181B2E63E800F75AA0 /* AppDelegate.m in Sources */,
 				F3B1C7151B2E63E800F75AA0 /* main.m in Sources */,
 			);

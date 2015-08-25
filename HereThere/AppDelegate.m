@@ -18,6 +18,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [GMSServices provideAPIKey:@"AIzaSyA-E2dTHjCWxgyuJRe4XJPLHs64cLGGOmI"];
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     return YES;
 }
 

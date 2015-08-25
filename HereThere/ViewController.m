@@ -24,22 +24,25 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //Background view color
+    self.view.backgroundColor = [UIColor htw_duskBlueColor];
+    
     //Set up JBChart view
     self.lineChartView = [[JBLineChartView alloc] init];
     self.lineChartView.frame = CGRectMake(0.0, self.view.frame.size.height-(self.view.frame.size.height/3)-100.0, self.view.frame.size.width, self.view.frame.size.height/3);
     
     //Add time labels
     self.lblCurrTime = [UILabel new];
-    self.lblCurrTime.textColor = [UIColor whiteColor];
-    self.lblCurrTime.backgroundColor = [UIColor darkGrayColor];
-    self.lblCurrTime.text = @"12am";
+    self.lblCurrTime.text = @"";
+    self.lblCurrTime.font = [UIFont systemFontOfSize:15.0 weight:0.0];
+    self.lblCurrTime.textAlignment = NSTextAlignmentRight;
     [self.lblCurrTime sizeToFit];
     [self.lineChartView addSubview:self.lblCurrTime];
     
     self.lblCompTime = [UILabel new];
-    self.lblCompTime.textColor = [UIColor whiteColor];
-    self.lblCompTime.backgroundColor = [UIColor darkGrayColor];
-    self.lblCompTime.text = @"12am";
+    self.lblCompTime.text = @"";
+    self.lblCompTime.font = [UIFont systemFontOfSize:15.0 weight:0.0];
+    self.lblCurrTime.textAlignment = NSTextAlignmentLeft;
     [self.lblCompTime sizeToFit];
     [self.lineChartView addSubview:self.lblCompTime];
     
@@ -72,14 +75,15 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     self.allHourlyData = [NSMutableDictionary new];
     
     //Set style for labels
-    UIColor *currentColor = [UIColor whiteColor];
-    UIColor *compareColor = [UIColor lightGrayColor];
-    self.lblCurrentLocationTemp.textColor = currentColor;
+    UIColor *currentColor = [UIColor htw_aquaMarineColor];
+    UIColor *compareColor = [UIColor htw_squashColor];
+    UIColor *standardColor = [UIColor htw_whiteColor];
+    self.lblCurrentLocationTemp.textColor = standardColor;
     self.lblCurrentLocationCityState.textColor = currentColor;
-    self.lblComparedWeatherLocationTemp.textColor = compareColor;
+    self.lblComparedWeatherLocationTemp.textColor = standardColor;
     self.lblComparedLocationCityState.textColor = compareColor;
-    self.lblComparedConditionClimacon.textColor = compareColor;
-    self.lblCurrConditionClimacon.textColor = currentColor;
+    self.lblComparedConditionClimacon.textColor = standardColor;
+    self.lblCurrConditionClimacon.textColor = standardColor;
     self.lblCompTime.textColor = compareColor;
     self.lblCurrTime.textColor = currentColor;
     
@@ -136,34 +140,34 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView colorForLineAtLineIndex:(NSUInteger)lineIndex
 {
     if (lineIndex == 0) {
-        return [UIColor whiteColor];
+        return [UIColor htw_aquaMarineColor];
     } else {
-        return [UIColor lightGrayColor];
+        return [UIColor htw_squashColor];
     }
 }
 
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionColorForLineAtLineIndex:(NSUInteger)lineIndex
 {
     if (lineIndex == 0) {
-        return [UIColor whiteColor];
+        return [UIColor htw_aquaMarineColor];
     } else {
-        return [UIColor lightGrayColor];
+        return [UIColor htw_squashColor];
     }
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
 {
-    return 2.0;
+    return 1.0;
 }
 
 - (UIColor *)lineChartView:(JBLineChartView *)lineChartView verticalSelectionColorForLineAtLineIndex:(NSUInteger)lineIndex
 {
-    return [UIColor blackColor]; // color of selection view
+    return [UIColor whiteColor]; // color of selection view
 }
 
 - (CGFloat)verticalSelectionWidthForLineChartView:(JBLineChartView *)lineChartView
 {
-    return 0.0; // width of selection view
+    return 1.0; // width of selection view
 }
 
 - (void)lineChartView:(JBLineChartView *)lineChartView didSelectLineAtIndex:(NSUInteger)lineIndex horizontalIndex:(NSUInteger)horizontalIndex touchPoint:(CGPoint)touchPoint
@@ -193,32 +197,22 @@ static NSString * const kOWMKey = @"f45984d7c8c7ac05bd9fa14d6383f489";
     [formatter setDateFormat:@"ha"];
     self.lblCurrTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:curr.date] lowercaseString]];
     self.lblCompTime.text = [NSString stringWithFormat:@"%@",[[formatter stringFromDate:comp.date] lowercaseString]];
+    [self.lblCurrTime sizeToFit];
+    [self.lblCompTime sizeToFit];
     
-    //Vertical data point - chartMin / (chartMax - chartMin) = % Height of chart
-    float chartHeight = self.lineChartView.frame.size.height;
-    float currPercentHeight = (currSelectedTemp - self.chartMin) / (self.chartMax - self.chartMin);
-    float compPercentHeight = (compSelectedTemp - self.chartMin) / (self.chartMax - self.chartMin);
-    
-    //Chart Height - % Height * Actual Height
     //Change padding based on data location
-    float MAXPADDING = -30;
-    float MINPADDING = 30;
-    
-    if (curr.temperature.f > comp.temperature.f) {
-        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.lblCurrTime.center = CGPointMake(touchPoint.x, (chartHeight - (currPercentHeight * chartHeight)) + MAXPADDING);
-            self.lblCompTime.center = CGPointMake(touchPoint.x, (chartHeight - (compPercentHeight * chartHeight)) + MINPADDING);
-        } completion:nil];
-    } else if (curr.temperature.f < comp.temperature.f) {
-        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.lblCurrTime.center = CGPointMake(touchPoint.x, (chartHeight - (currPercentHeight * chartHeight)) + MINPADDING);
-            self.lblCompTime.center = CGPointMake(touchPoint.x, (chartHeight - (compPercentHeight * chartHeight)) + MAXPADDING);
-        } completion:nil];
-    }  else {
-        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            self.lblCurrTime.center = CGPointMake(touchPoint.x, (chartHeight - (currPercentHeight * chartHeight)) + MAXPADDING);
-            self.lblCompTime.center = CGPointMake(touchPoint.x, (chartHeight - (compPercentHeight * chartHeight)) + MINPADDING);
-        } completion:nil];
+    float CHARTPADDING = 10;
+    float TIMELABELPADDING = 7.5;
+
+    self.lblCurrTime.center = CGPointMake(touchPoint.x - (self.lblCurrTime.frame.size.width/2) - TIMELABELPADDING, CHARTPADDING);
+    self.lblCompTime.center = CGPointMake(touchPoint.x + (self.lblCompTime.frame.size.width/2) +TIMELABELPADDING, CHARTPADDING);
+}
+
+- (void)didDeselectLineInLineChartView:(JBLineChartView *)lineChartView
+{
+    if (!self.lblCurrTime.hidden || !self.lblCompTime.hidden) {
+        self.lblCurrTime.hidden = true;
+        self.lblCompTime.hidden = true;
     }
 }
 

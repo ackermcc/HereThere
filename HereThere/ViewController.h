@@ -19,6 +19,7 @@
 #import "JBLineChartView.h"
 
 #import "WeatherData.h"
+#import "UIColor+HTWColors.h"
 
 @interface ViewController : UIViewController <UIScrollViewDelegate>
 
